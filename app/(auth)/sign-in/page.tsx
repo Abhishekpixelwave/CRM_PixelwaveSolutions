@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, User, Lock, Eye, EyeOff, FlaskConical } from "lucide-react";
 
+import { isDemoModeClient } from "@/lib/demo-mode";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +22,7 @@ function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
-  const isDev = process.env.NODE_ENV === "development";
+  const isDemo = isDemoModeClient();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +78,7 @@ function SignInForm() {
           </div>
 
           {/* Dev mode badge */}
-          {isDev && (
+          {isDemo && (
             <div className="mx-auto flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-600 dark:text-amber-400">
               <FlaskConical className="h-3 w-3" />
               Demo Mode — any credentials will work
@@ -165,7 +166,7 @@ function SignInForm() {
 
         <CardFooter className="flex justify-center pt-2">
           <p className="text-xs text-muted-foreground">
-            Boost CMS • {isDev ? "Development" : "Production"}
+            Boost CMS • {isDemo ? "Demo" : "Production"}
           </p>
         </CardFooter>
       </Card>

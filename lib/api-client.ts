@@ -9,8 +9,9 @@ import {
   MOCK_PRICE_STRATEGIES,
   MOCK_TOKEN,
 } from "./mock-data"
+import { isDemoMode } from "./demo-mode"
 
-const isDev = process.env.NODE_ENV === "development"
+const useMockData = isDemoMode()
 const API_BASE_URL =
   process.env.BAJIE_API_URL || "https://developer.chargenow.top/cdb-open-api/v1"
 
@@ -74,7 +75,7 @@ export async function loginApi(
   username: string,
   password: string
 ): Promise<{ token: string; user: { id: string; name: string } }> {
-  if (isDev) {
+  if (useMockData) {
     // Dev mode: accept any credentials
     return {
       token: MOCK_TOKEN,
@@ -128,7 +129,7 @@ export async function getAllDevicePage(
   params: { page?: number; limit?: number } = {},
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     const page = params.page || 1
     const limit = params.limit || 20
     const start = (page - 1) * limit
@@ -148,7 +149,7 @@ export async function getAllDevicePage(
 
 // 2. Query details based on Device Id
 export async function getCabinetDetail(cabinetId: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const cab = devCabinets.find((c) => c.cabinetId === cabinetId)
     return { msg: "success", code: 0, data: cab || null }
   }
@@ -157,7 +158,7 @@ export async function getCabinetDetail(cabinetId: string, token?: string) {
 
 // 3. Get device list by shop id
 export async function getDeviceByShopId(shopId: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const list = devCabinets.filter((c) => c.shopId === shopId)
     return { msg: "success", code: 0, data: list }
   }
@@ -166,7 +167,7 @@ export async function getDeviceByShopId(shopId: string, token?: string) {
 
 // 4. Query battery list based on Device Id
 export async function getBatteryList(cabinetId: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const batteries = MOCK_CABINET_BATTERIES[cabinetId] || []
     return { msg: "success", code: 0, data: batteries }
   }
@@ -175,7 +176,7 @@ export async function getBatteryList(cabinetId: string, token?: string) {
 
 // 5. Query slot list based on Device Id
 export async function getSlotList(cabinetId: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const slots = MOCK_CABINET_SLOTS[cabinetId] || []
     return { msg: "success", code: 0, data: slots }
   }
@@ -192,7 +193,7 @@ export async function deviceOperation(
   },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     return {
       msg: `Operation '${params.operationType}' sent to ${params.cabinetid} slot ${params.slotNum}`,
       code: 0,
@@ -212,7 +213,7 @@ export async function ejectByRent(
   params: { cabinetid: string; rentOrderId: string; slotNum: number },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     return {
       msg: `Battery ejected from ${params.cabinetid} slot ${params.slotNum} for order ${params.rentOrderId}`,
       code: 0,
@@ -231,7 +232,7 @@ export async function ejectByRepair(
   params: { cabinetid: string; slotNum: number },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     return {
       msg: `Repair eject sent to ${params.cabinetid} slot ${params.slotNum}`,
       code: 0,
@@ -250,7 +251,7 @@ export async function bindDeviceToShop(
   newShopId: string,
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     devCabinets = devCabinets.map((c) =>
       c.cabinetId === qrcode ? { ...c, shopId: newShopId } : c
     )
@@ -268,7 +269,7 @@ export async function unbindDeviceFromShop(
   deviceIds: string[],
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     devCabinets = devCabinets.map((c) =>
       deviceIds.includes(c.cabinetId) ? { ...c, shopId: "", shopName: "" } : c
     )
@@ -298,7 +299,7 @@ export async function updateCabinetAd(
   },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     return {
       msg: `Ad updated for ${payload.cabinetIdList.length} cabinets`,
       code: 0,
@@ -328,7 +329,7 @@ export async function publishCabinetAd(
   },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     return {
       msg: `Ad published to ${payload.cabinetIdList.length} cabinets`,
       code: 0,
@@ -365,12 +366,12 @@ export interface CreateShopPayload {
 }
 
 export async function getShopList(token?: string) {
-  if (isDev) return { ...MOCK_SHOPS, data: devShops }
+  if (useMockData) return { ...MOCK_SHOPS, data: devShops }
   return apiFetch("/shop/getShopList", {}, token)
 }
 
 export async function getShopDetail(shopId: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const shop = devShops.find((s) => s.newID === shopId)
     return { msg: "success", code: "200", data: shop || null }
   }
@@ -378,7 +379,7 @@ export async function getShopDetail(shopId: string, token?: string) {
 }
 
 export async function createShop(payload: CreateShopPayload, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const newShop: ShopItem = {
       id: devShopNextId++,
       newID: payload.pNewid || `shop-${Date.now()}`,
@@ -423,7 +424,7 @@ export async function updateShop(
   payload: CreateShopPayload & { id?: number },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     devShops = devShops.map((s) =>
       s.newID === payload.pNewid
         ? {
@@ -451,7 +452,7 @@ export async function updateShop(
 }
 
 export async function deleteShop(shopId: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     devShops = devShops.filter((s) => s.newID !== shopId)
     return { msg: "success", code: "200" }
   }
@@ -469,7 +470,7 @@ export async function getOrderList(
   } = {},
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     const page = params.page || 1
     const limit = params.limit || 10
     const start = (page - 1) * limit
@@ -511,7 +512,7 @@ export async function getPriceStrategyPage(
   } = {},
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     let filtered = [...devPriceStrategies]
     if (params.shopId)
       filtered = filtered.filter((p) => p.shopId === params.shopId)
@@ -542,7 +543,7 @@ export async function getPriceStrategyPage(
 
 // 2. Get Price Strategy Detail
 export async function getPriceStrategyDetail(priceId: number, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const found = devPriceStrategies.find((p) => p.priceId === priceId)
     return { msg: "success", code: 0, data: found || null }
   }
@@ -578,7 +579,7 @@ export async function saveOrUpdatePriceStrategy(
   },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     if (payload.priceId) {
       // Update
       devPriceStrategies = devPriceStrategies.map((p) =>
@@ -610,7 +611,7 @@ export async function saveOrUpdatePriceStrategy(
 
 // 4. Delete Price Strategy
 export async function deletePriceStrategy(priceIds: number[], token?: string) {
-  if (isDev) {
+  if (useMockData) {
     devPriceStrategies = devPriceStrategies.filter(
       (p) => !priceIds.includes(p.priceId)
     )
@@ -628,7 +629,7 @@ export async function bindShopPriceStrategy(
   payload: { shopId: string; priceId: number; customType: number },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     devPriceStrategies = devPriceStrategies.map((p) =>
       p.priceId === payload.priceId ? { ...p, shopId: payload.shopId } : p
     )
@@ -646,7 +647,7 @@ export async function unbindShopPriceStrategy(
   payload: { shopId: string; customType: number },
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     devPriceStrategies = devPriceStrategies.map((p) =>
       p.shopId === payload.shopId ? { ...p, shopId: "" } : p
     )
@@ -662,7 +663,7 @@ export async function unbindShopPriceStrategy(
 // ─── Open API ────────────────────────────────────────────────
 
 // export async function oauth2Login(username: string, passwordHash: string) {
-//   if (isDev) {
+//   if (useMockData) {
 //     return { key: { access_token: MOCK_TOKEN } };
 //   }
 //   return apiFetch(`/oauth2/login?username=${username}&password=${passwordHash}`, {
@@ -674,7 +675,7 @@ export async function getOpenDeviceList(
   params: OpenDeviceListParams = {},
   token?: string
 ) {
-  if (isDev) return MOCK_DEVICES
+  if (useMockData) return MOCK_DEVICES
 
   const qs = new URLSearchParams({
     ...DEFAULT_OPEN_DEVICE_LIST_PARAMS,
@@ -684,7 +685,7 @@ export async function getOpenDeviceList(
 }
 
 export async function getOpenDeviceInfo(deviceId: string, token?: string) {
-  if (isDev) return MOCK_DEVICE_INFO
+  if (useMockData) return MOCK_DEVICE_INFO
 
   return apiFetch(
     `/rent/cabinet/query?deviceId=${deviceId}`,
@@ -698,7 +699,7 @@ export async function createRentOrder(
   callbackURL: string,
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     return { msg: "success", code: 0, data: { tradeNo: `TRADE-${Date.now()}` } }
   }
   return apiFetch(
@@ -709,7 +710,7 @@ export async function createRentOrder(
 }
 
 export async function queryRentOrderStatus(tradeNo: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     const { getRentCallbackStatus } = await import("./webhook-events")
     const callback = getRentCallbackStatus(tradeNo)
     return {
@@ -726,7 +727,7 @@ export async function queryRentOrderStatus(tradeNo: string, token?: string) {
 }
 
 export async function markOrderCompleted(tradeNo: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     return { msg: "success", code: 0 }
   }
   return apiFetch(
@@ -737,7 +738,7 @@ export async function markOrderCompleted(tradeNo: string, token?: string) {
 }
 
 export async function getOrderDetail(tradeNo: string, token?: string) {
-  if (isDev) {
+  if (useMockData) {
     return {
       msg: "success",
       code: 0,
@@ -784,7 +785,7 @@ let devEventPushConfig = {
 }
 
 export async function getEventPushConfig(token?: string) {
-  if (isDev) {
+  if (useMockData) {
     return { code: 0, msg: "success", data: devEventPushConfig }
   }
   return apiFetch("/cabinet/eventPush/config/get", { method: "GET" }, token)
@@ -794,7 +795,7 @@ export async function setEventPushConfig(
   payload: typeof devEventPushConfig,
   token?: string
 ) {
-  if (isDev) {
+  if (useMockData) {
     devEventPushConfig = payload
     return { code: 0, msg: "success", data: devEventPushConfig }
   }

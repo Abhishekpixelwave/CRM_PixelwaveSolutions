@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ShareRevenueHeaderButton } from "@/components/share-revenue-header-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { isDemoMode } from "@/lib/demo-mode";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -31,7 +32,7 @@ export default async function DashboardLayout({
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <ShareRevenueHeaderButton />
-              {process.env.NODE_ENV === "development" && (
+              {isDemoMode() && (
                 <span className="rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-medium text-amber-600 dark:text-amber-400">
                   Demo Mode
                 </span>

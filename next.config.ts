@@ -1,5 +1,9 @@
 import type { NextConfig } from "next"
 
-const nextConfig: NextConfig = {}
+const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_DEMO_MODE: process.env.DEMO_MODE ?? "",
+  },
+}
 
 export default nextConfig

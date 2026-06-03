@@ -1,3 +1,5 @@
+import { isDemoMode } from "./demo-mode"
+
 export type RevenueSharePartner = {
   id: string
   shopId: string
@@ -66,7 +68,7 @@ let devPayoutNextId = 1
 let devPartnerNextId = 100
 
 function refreshStaleDevPartners() {
-  if (process.env.NODE_ENV !== "development") return
+  if (!isDemoMode()) return
   const hasLegacyPaidOut = devPartners.some(
     (p) => p.id === "rsp-001" && p.totalPaidOut >= 420
   )
