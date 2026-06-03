@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Link2, Unplug, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Link2, Unplug, Loader2, Eye } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,10 +25,19 @@ import {
 } from "@/components/ui/select";
 import type { PriceStrategyItem } from "@/lib/api-client";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   createOrUpdatePriceStrategyAction,
   deletePriceStrategyAction,
   bindShopPriceStrategyAction,
   unbindShopPriceStrategyAction,
+  fetchPriceStrategyDetailAction,
 } from "./actions";
 
 // ─── Create / Edit Price Strategy ────────────────────────────────────
@@ -454,6 +463,113 @@ export function UnbindShopButton({
             </Button>
           </DialogFooter>
         </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ─── Price Strategy Detail Dialog ──────────────────────────────────────
+export function PriceStrategyDetailDialog({
+  priceId,
+  name,
+}: {
+  priceId: number;
+  name: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [strategy, setStrategy] = useState<PriceStrategyItem | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    setLoading(true);
+    fetchPriceStrategyDetailAction(priceId)
+      .then((res) => {
+        const data = (res as { data?: PriceStrategyItem }).data;
+        setStrategy(data || null);
+      })
+      .finally(() => setLoading(false));
+  }, [open, priceId]);
+
+  const details = strategy?.priceStrategyDetailList || [];
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="icon-xs" variant="ghost" title="View details">
+          <Eye className="h-3.5 w-3.5" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{name}</DialogTitle>
+          <DialogDescription>Full price strategy configuration</DialogDescription>
+        </DialogHeader>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : strategy ? (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <span className="text-muted-foreground">Type</span>
+                <p>{strategy.type === 1 ? "Advanced" : strategy.type === 2 ? "Timetable" : "General"}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Deposit</span>
+                <p>¥{strategy.depositAmount}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Unit Price</span>
+                <p>¥{strategy.price}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Daily Cap</span>
+                <p>¥{strategy.dailyMaxPrice}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Free Minutes</span>
+                <p>{strategy.freeMinutes}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">Timeout</span>
+                <p>
+                  ¥{strategy.timeoutAmount} / {strategy.timeoutDay} days
+                </p>
+              </div>
+            </div>
+
+            {details.length > 0 && (
+              <div>
+                <h4 className="mb-2 text-sm font-medium">Timetable Tiers</h4>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Minutes</TableHead>
+                      <TableHead>Section Fee</TableHead>
+                      <TableHead>Total Fee</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {details.map((tier) => (
+                      <TableRow key={tier.seqno}>
+                        <TableCell>
+                          {tier.startMinute}–{tier.endMinute}
+                        </TableCell>
+                        <TableCell>¥{tier.setcionFee}</TableCell>
+                        <TableCell>¥{tier.totalFee}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">No detail available.</p>
+        )}
       </DialogContent>
     </Dialog>
   );

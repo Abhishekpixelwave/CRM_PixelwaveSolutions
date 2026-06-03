@@ -1,3 +1,5 @@
+import { ThemeToggle } from "@/components/theme-toggle";
+
 export default function AuthLayout({
   children,
 }: {
@@ -5,6 +7,9 @@ export default function AuthLayout({
 }) {
   return (
     <div className="relative flex min-h-svh items-center justify-center overflow-hidden bg-background p-4">
+      <div className="absolute right-4 top-4 z-20">
+        <ThemeToggle />
+      </div>
       {/* Animated gradient background orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-40 -top-40 h-80 w-80 animate-pulse rounded-full bg-primary/10 blur-3xl" />

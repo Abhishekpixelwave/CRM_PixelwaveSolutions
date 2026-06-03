@@ -5,7 +5,7 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Public routes that don't require authentication
-  const publicRoutes = ["/sign-in"];
+  const publicRoutes = ["/sign-in", "/api/webhooks"];
   const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
   const isApiAuthRoute = pathname.startsWith("/api/auth");
 
@@ -33,5 +33,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

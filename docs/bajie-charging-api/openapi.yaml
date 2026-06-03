@@ -1,0 +1,3677 @@
+openapi: 3.0.1
+info:
+  title: Bajie Charging Open API
+  description: Downloaded from https://s.apifox.cn/4855b8fe-4c43-48f6-8bd6-37cc29b98fe5
+  version: 1.0.0
+servers:
+  - url: https://developer.chargenow.top/cdb-open-api/v1
+    description: Production
+  - url: https://saas.dtoolsz.com/cdb-open-api/v1
+    description: 得兔-多货币
+paths:
+  /cabinet/batteryListByCabinetId/{cabinetId}:
+    get:
+      summary: Query battery list based on Device Id
+      deprecated: false
+      description: Query battery list based on Device Id
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: cabinetId
+          in: path
+          description: Device Id
+          required: true
+          example: DTA38785
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: dailiId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: RestResponse
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104221999-run
+      x-apifox-source: api-104221999
+  /cabinet/bind2shop/{qrcode}/{newshopid}:
+    post:
+      summary: binding device to shop
+      deprecated: false
+      description: binding device to shop
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: qrcode
+          in: path
+          description: Device id or qr Code
+          required: true
+          example: SAB02371
+          schema:
+            type: string
+        - name: newshopid
+          in: path
+          description: shop id
+          required: true
+          example: '04679963e0'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222000-run
+      x-apifox-source: api-104222000
+  /cabinet/detail/{cabinetId}:
+    get:
+      summary: Query details based on Device Id
+      deprecated: false
+      description: Query details based on Device Id
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: cabinetId
+          in: path
+          description: Device Id  Or  QrCode Or QrCode_Url
+          required: true
+          example: SAB02371
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: dailiId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: RestResponse
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222001-run
+      x-apifox-source: api-104222001
+  /cabinet/ejectByRent:
+    post:
+      summary: Rent and eject the battery for the specified device slot
+      deprecated: false
+      description: Rent and eject the battery for the specified device slot
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: cabinetid
+          in: query
+          description: Device ID
+          required: true
+          example: DTA19484
+          schema:
+            type: string
+        - name: rentOrderId
+          in: query
+          description: rentOrderId
+          required: true
+          example: '26041620260378047128'
+          schema:
+            type: string
+        - name: slotNum
+          in: query
+          description: Slot Number
+          required: true
+          example: 2
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222002-run
+      x-apifox-source: api-104222002
+  /cabinet/ejectByRepair:
+    post:
+      summary: eject the battery for the specified device slot by repair
+      deprecated: false
+      description: eject the battery for the specified device slot by repair
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: dailiId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: cabinetid
+          in: query
+          description: Device ID
+          required: true
+          example: SAB02371
+          schema:
+            type: string
+        - name: slotNum
+          in: query
+          description: Slot Number,0 or null will eject all battery
+          required: true
+          example: 1
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222003-run
+      x-apifox-source: api-104222003
+  /cabinet/getAllDevicePage:
+    get:
+      summary: get all device list by page
+      deprecated: false
+      description: get all device list by page
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: dailiId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: current page
+          required: true
+          example: '1'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: rows per page
+          required: true
+          example: '20'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222005-run
+      x-apifox-source: api-104222005
+  /cabinet/getDeviceByShopId:
+    get:
+      summary: get device list by shop id
+      deprecated: false
+      description: get device list by shop id
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: dailiId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: shopid
+          in: query
+          description: Shop ID
+          required: true
+          example: '04679963e0'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222006-run
+      x-apifox-source: api-104222006
+  /cabinet/operation:
+    post:
+      summary: Device Operation
+      deprecated: false
+      description: Device 操作
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: cabinetid
+          in: query
+          description: Device ID
+          required: true
+          example: DTA19484
+          schema:
+            type: string
+        - name: slotNum
+          in: query
+          description: Slot Number
+          required: true
+          example: 2
+          schema:
+            type: integer
+        - name: operationType
+          in: query
+          description: Operation type;restart,pop,popall,popallForNoAuth,popallForAuth,heartbeat,lock,unlock,lockStopCharge,report
+          required: true
+          example: pop
+          schema:
+            type: string
+        - name: reason
+          in: query
+          description: lock reason
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: batcabFault
+          in: query
+          description: slot failure type
+          required: false
+          example: 0
+          schema:
+            type: integer
+        - name: batteryFault
+          in: query
+          description: battery failure type
+          required: false
+          example: 0
+          schema:
+            type: integer
+        - name: type
+          in: query
+          description: 0=slot failure, 1=battery failure
+          required: false
+          example: 0
+          schema:
+            type: integer
+        - name: gpsTime
+          in: query
+          description: gpsTime
+          required: false
+          example: 0
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: RestResponse
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222009-run
+      x-apifox-source: api-104222009
+  /cabinet/slotByCabinetId/{cabinetId}:
+    get:
+      summary: Query slot list based on Device Id
+      deprecated: false
+      description: Query slot list based on Device Id
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: cabinetId
+          in: path
+          description: Device Id
+          required: true
+          example: SAB02371
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: dailiId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: RestResponse
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: OK
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222014-run
+      x-apifox-source: api-104222014
+  /shop/create:
+    post:
+      summary: create new shop
+      deprecated: false
+      description: create new shop
+      operationId: createStoreUsingPOST
+      tags:
+        - Advance API/Shop
+        - shop-controller
+      parameters:
+        - name: Authorization
+          in: header
+          description: ''
+          required: false
+          example: Basic dGVzdDp0ZXN0
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CdbShopEntity'
+            example: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  x-apifox-orders: []
+                x-apifox-orders: []
+                properties: {}
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: OK
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Created
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Unauthorized
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Forbidden
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Not Found
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Shop
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222036-run
+      x-apifox-source: api-104222036
+  /shop/delete/{shopid}:
+    delete:
+      summary: Delete shop
+      deprecated: false
+      description: Delete shop
+      operationId: deleteStoreUsingDELETE
+      tags:
+        - Advance API/Shop
+        - shop-controller
+      parameters:
+        - name: shopid
+          in: path
+          description: shop Id
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: ''
+          required: false
+          example: Basic dGVzdDp0ZXN0
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  x-apifox-orders: []
+                x-apifox-orders: []
+                properties: {}
+          headers: {}
+          x-apifox-name: OK
+        '204':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: No Content
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Unauthorized
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Forbidden
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Shop
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222037-run
+      x-apifox-source: api-104222037
+  /shop/detail/{shopid}:
+    get:
+      summary: get shop detail
+      deprecated: false
+      description: get shop detail
+      operationId: getShopUsingGET
+      tags:
+        - Advance API/Shop
+        - shop-controller
+      parameters:
+        - name: shopid
+          in: path
+          description: shop id
+          required: true
+          example: ''
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: ''
+          required: false
+          example: Basic dGVzdDp0ZXN0
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  x-apifox-orders: []
+                x-apifox-orders: []
+                properties: {}
+          headers: {}
+          x-apifox-name: OK
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Unauthorized
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Forbidden
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Not Found
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Shop
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222038-run
+      x-apifox-source: api-104222038
+  /shop/getShopList:
+    get:
+      summary: get all shop list
+      deprecated: false
+      description: get all shop list
+      operationId: getShopListUsingGET
+      tags:
+        - Advance API/Shop
+        - shop-controller
+      parameters:
+        - name: Authorization
+          in: header
+          description: ''
+          required: false
+          example: Basic dGVzdDp0ZXN0
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        ids:
+                          type: integer
+                        newID:
+                          type: string
+                          description: Merchant Unique Identifier
+                        pPtid:
+                          type: string
+                          description: Platform ID
+                        pSfid:
+                          type: string
+                        pCsid:
+                          type: string
+                        pQyid:
+                          type: string
+                        pYwid:
+                          type: string
+                        pDpid:
+                          type: string
+                        shopName:
+                          type: string
+                          description: merchant name
+                        shopAddress:
+                          type: string
+                          description: Merchant Address
+                        shopAddress1:
+                          type: string
+                          description: Merchant Address
+                        mobile:
+                          type: string
+                          description: Mobile
+                        distance:
+                          type: string
+                          description: Distance
+                        batteryNum:
+                          type: string
+                          description: Number of merchant batteries
+                        freeNum:
+                          type: string
+                          description: The number of batteries that merchants can borrow
+                        cabinetNum:
+                          type: integer
+                          description: Number of merchant cabinets
+                        longitude:
+                          type: string
+                          description: longitude
+                        latitude:
+                          type: string
+                          description: latitude
+                        shopBanner:
+                          type: string
+                          description: Merchant banner
+                        shopIcon:
+                          type: string
+                          description: Merchant icon
+                        shopTime:
+                          type: string
+                          description: Business hours of the merchant
+                        shopWorkTime:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              openTime:
+                                type: string
+                                description: Business opening time
+                              closeTime:
+                                type: string
+                                description: Closing time for merchants
+                              dayOfWeek:
+                                type: integer
+                                description: The day of the week on which it occurs every week
+                            x-apifox-orders:
+                              - openTime
+                              - closeTime
+                              - dayOfWeek
+                          description: List of business hours for merchants
+                        shopUrl:
+                          type: string
+                          description: The image address of the merchant's homepage
+                        distanceNumber:
+                          type: integer
+                          description: distance
+                        sceneType:
+                          type: string
+                          description: Merchant scenario type
+                        sceneTypeDesc:
+                          type: string
+                          description: Merchant scenario type
+                        pStoreType:
+                          type: string
+                          description: Merchant type
+                        pStoreCategory:
+                          type: string
+                          description: Merchant category
+                        infoStatus:
+                          type: string
+                        pPriceid:
+                          type: integer
+                          description: Price Strategy ID
+                        posPriceId:
+                          type: integer
+                          description: POS Pricing Strategy ID
+                        pMian:
+                          type: string
+                          description: Merchant free duration
+                        pJifei:
+                          type: string
+                          description: Merchant unit price amount
+                        pJifeiDanwei:
+                          type: string
+                          description: Merchant unit of measurement for pricing
+                        priceUnit:
+                          type: integer
+                          description: Billing unit granularity
+                        pFengding:
+                          type: string
+                          description: Merchant billing cap amount
+                        pYajin:
+                          type: string
+                          description: Deposit amount
+                        overtimeAmount:
+                          type: string
+                          description: Overdue amount
+                        overtimeDay:
+                          type: integer
+                          description: Number of overtime days
+                        pCurrency:
+                          type: string
+                          description: Currency
+                        currencyName:
+                          type: string
+                          description: Currency Name
+                        canReturnNum:
+                          type: string
+                          description: The number of cards that can be returned
+                        chargingBatteryNum:
+                          type: string
+                          description: The number of charging pads that are currently charging
+                        shopType:
+                          type: array
+                          items:
+                            type: integer
+                          description: 'Network type: 1. Charger Battery, 2. Mifi Device'
+                        cabinetIds:
+                          type: string
+                          description: List of device IDs
+                        businessType:
+                          type: string
+                          description: Business Type
+                        businessTypeDesc:
+                          type: string
+                          description: Description of business type
+                        businessScene:
+                          type: string
+                          description: Business scenario
+                        businessSceneDesc:
+                          type: string
+                          description: Business scenario description
+                        businessCategory:
+                          type: string
+                          description: Business category
+                        businessCategoryDesc:
+                          type: string
+                          description: Description of Business Categories
+                        businessStatus:
+                          type: integer
+                          description: 'Business status: 0 - Not open, 1 - Open'
+                        extendedJson:
+                          type: string
+                          description: Expand field
+                      x-apifox-orders:
+                        - id
+                        - ids
+                        - newID
+                        - pPtid
+                        - pSfid
+                        - pCsid
+                        - pQyid
+                        - pYwid
+                        - pDpid
+                        - shopName
+                        - shopAddress
+                        - shopAddress1
+                        - mobile
+                        - distance
+                        - batteryNum
+                        - freeNum
+                        - cabinetNum
+                        - longitude
+                        - latitude
+                        - shopBanner
+                        - shopIcon
+                        - shopTime
+                        - shopWorkTime
+                        - shopUrl
+                        - distanceNumber
+                        - sceneType
+                        - sceneTypeDesc
+                        - pStoreType
+                        - pStoreCategory
+                        - infoStatus
+                        - pPriceid
+                        - posPriceId
+                        - pMian
+                        - pJifei
+                        - pJifeiDanwei
+                        - priceUnit
+                        - pFengding
+                        - pYajin
+                        - overtimeAmount
+                        - overtimeDay
+                        - pCurrency
+                        - currencyName
+                        - canReturnNum
+                        - chargingBatteryNum
+                        - shopType
+                        - cabinetIds
+                        - businessType
+                        - businessTypeDesc
+                        - businessScene
+                        - businessSceneDesc
+                        - businessCategory
+                        - businessCategoryDesc
+                        - businessStatus
+                        - extendedJson
+                required:
+                  - msg
+                  - code
+                  - data
+                x-apifox-orders:
+                  - msg
+                  - code
+                  - data
+              example:
+                msg: ''
+                code: ''
+                data:
+                  - id: 0
+                    ids: 0
+                    newID: string
+                    pPtid: string
+                    pSfid: string
+                    pCsid: string
+                    pQyid: string
+                    pYwid: string
+                    pDpid: string
+                    shopName: string
+                    shopAddress: string
+                    shopAddress1: string
+                    mobile: string
+                    distance: string
+                    batteryNum: string
+                    freeNum: string
+                    cabinetNum: 0
+                    longitude: string
+                    latitude: string
+                    shopBanner: string
+                    shopIcon: string
+                    shopTime: string
+                    shopWorkTime:
+                      - openTime: string
+                        closeTime: string
+                        dayOfWeek: 0
+                    shopUrl: string
+                    distanceNumber: 0
+                    sceneType: string
+                    sceneTypeDesc: string
+                    pStoreType: string
+                    pStoreCategory: string
+                    infoStatus: string
+                    pPriceid: 0
+                    posPriceId: 0
+                    pMian: string
+                    pJifei: string
+                    pJifeiDanwei: string
+                    priceUnit: 0
+                    pFengding: string
+                    pYajin: string
+                    overtimeAmount: string
+                    overtimeDay: 0
+                    pCurrency: string
+                    currencyName: string
+                    canReturnNum: string
+                    chargingBatteryNum: string
+                    shopType:
+                      - 0
+                    cabinetIds: string
+                    businessType: string
+                    businessTypeDesc: string
+                    businessScene: string
+                    businessSceneDesc: string
+                    businessCategory: string
+                    businessCategoryDesc: string
+                    businessStatus: 0
+                    extendedJson: string
+          headers: {}
+          x-apifox-name: OK
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Unauthorized
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Forbidden
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: Not Found
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Shop
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222039-run
+      x-apifox-source: api-104222039
+  /shop/update:
+    put:
+      summary: update shop
+      deprecated: false
+      description: update shop
+      operationId: updateStoreUsingPUT
+      tags:
+        - Advance API/Shop
+        - shop-controller
+      parameters:
+        - name: Authorization
+          in: header
+          description: ''
+          required: false
+          example: Basic dGVzdDp0ZXN0
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CdbShopEntity'
+            example: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  x-apifox-orders: []
+                x-apifox-orders: []
+                properties: {}
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: OK
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Created
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Unauthorized
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Forbidden
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: Not Found
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Shop
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-104222040-run
+      x-apifox-source: api-104222040
+  /order/list:
+    get:
+      summary: Order list
+      deprecated: false
+      description: ''
+      tags:
+        - Advance API/Order
+      parameters:
+        - name: page
+          in: query
+          description: ''
+          required: true
+          example: 1
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: ''
+          required: true
+          example: 10
+          schema:
+            type: integer
+        - name: dataLevel
+          in: query
+          description: Data access, 1. Only myself, 2. Only subordinates, 3. Myself and subordinates
+          required: false
+          example: 3
+          schema:
+            type: integer
+        - name: sTime
+          in: query
+          description: ''
+          required: false
+          example: ''
+          schema:
+            type: string
+        - name: eTime
+          in: query
+          description: ''
+          required: false
+          example: ''
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Order
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-110374526-run
+      x-apifox-source: api-110374526
+  /cabinet/eventPush/config:
+    post:
+      summary: Cabinet Event Push Config
+      deprecated: false
+      description: ''
+      tags:
+        - Cabinet Event Push
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCabinetEventPushConfig'
+            example:
+              pushUrl: https://receiving.push.com/event
+              eventSubscriptions:
+                - event: CABINET_ONLINE
+                  pushUrl: ''
+                  enable: true
+                - event: CABINET_OFFLINE
+                  pushUrl: ''
+                  enable: true
+                - event: CABINET_STATUS
+                  pushUrl: ''
+                  enable: true
+                - event: BATTERY_IN
+                  pushUrl: ''
+                  enable: true
+                - event: BATTERY_BORROW_OUT
+                  pushUrl: ''
+                  enable: true
+                - event: BATTERY_ABNORMAL_WARNING
+                  pushUrl: ''
+                  enable: true
+                - event: BATTERY_POPUP
+                  pushUrl: ''
+                  enable: true
+                - event: POS_INFO_STATUS
+                  pushUrl: ''
+                  enable: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/AgentCabinetEventPushConfig'
+                required:
+                  - msg
+                  - code
+                  - data
+                x-apifox-orders:
+                  - msg
+                  - code
+                  - data
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Cabinet Event Push
+      x-apifox-status: developing
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-136039440-run
+      x-apifox-source: api-136039440
+  /The URL you configured to receive cabinet event messages:
+    post:
+      summary: Cabinet Event Push
+      deprecated: false
+      description: ''
+      tags:
+        - Cabinet Event Push
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agentAccount:
+                  type: string
+                  title: Agent account
+                event:
+                  type: string
+                  title: Cabinet event
+                  description: 'CABINET_ONLINE: Cabinet online event CABINET_OFFLINE: Cabinet offline event CABINET_STATUS: Cabinet status report event BATTERY_IN: Battery in eventBATTERY_BORROW_OUT: Battery be borrowed out event BATTERY_ABNORMAL_WARNING: Battery abnormality warning event BATTERY_POPUP: Battery repair pop-up event ADMIN_RENTAL_ORDER:Backstage management issues rental orders'
+                eventData:
+                  type: object
+                  properties:
+                    batteryList:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          batteryFaultCause:
+                            type: string
+                            title: 电池故障原因
+                          batteryFaultType:
+                            type: integer
+                            title: 电池故障类型
+                            description: 0.正常，1.虚电，2.苹果线故障，3.USB线故障，4.TypeC故障，5.鼓包，6.授权失败，7.无法充电，8.电池ID重复，9.电池召回，10.电池健康不达标需回收，11.电池超限使用需回收
+                          batteryId:
+                            type: string
+                            title: 电池ID
+                          faultCause:
+                            type: string
+                            title: 卡口故障原因
+                          faultType:
+                            type: integer
+                            title: 卡口故障类型
+                            description: 1.电池授权失败，2.卡口无法弹出充电宝，3.No this ID，4.防盗开关，5.无法识别ID，6.插入开关失效，7.卡口无法锁充电宝，8.手工锁定
+                          infoStatus:
+                            type: string
+                            title: 电池在线状态
+                            description: Online or Offline
+                          slot:
+                            type: integer
+                            title: 电池所在卡口号
+                          vol:
+                            type: integer
+                            title: 电池电量
+                        x-apifox-orders:
+                          - batteryId
+                          - slot
+                          - vol
+                          - infoStatus
+                          - faultType
+                          - faultCause
+                          - batteryFaultType
+                          - batteryFaultCause
+                        required:
+                          - batteryId
+                          - slot
+                      title: Battery information
+                    cabinetId:
+                      type: string
+                      title: Cabinet ID
+                    clientIp:
+                      type: string
+                      title: Cabinet IP
+                    clientPort:
+                      type: string
+                      title: Cabinet IP PORT
+                    geoHash:
+                      type: string
+                      title: Cabinet side positioning, GEO hash value
+                    infoStatus:
+                      type: string
+                      title: Cabinet online status
+                      description: Online or Offline
+                    rentableCount:
+                      type: integer
+                      title: Number of borrowed batteries
+                    returnableCount:
+                      type: integer
+                      title: Number of empty charging slots
+                    signal:
+                      type: string
+                      title: Cabinet end signal strength
+                      description: 'GPRS signal quality, range: 0-31; At least 19 is required to connect to the network, and 31 is best'
+                    totalCount:
+                      type: integer
+                      title: Total number of charging slots
+                    icCard:
+                      type: string
+                      title: IC card number
+                    onlineTime:
+                      type: string
+                      title: Cabinet online time
+                    offlineTime:
+                      type: string
+                      title: Cabinet offline time
+                    outBatteryId:
+                      type: string
+                      title: Eject battery's ID
+                    outSlot:
+                      type: integer
+                      title: Eject battery's slot
+                    orderId:
+                      type: string
+                      title: Order ID
+                    faultType:
+                      type: integer
+                      title: Rental fail types
+                      description: |-
+                        0.Other or undefined errors,
+                        1.Authorize Battery fail
+                        2.Unable to find this battery ID
+                        3.Eject battery fail
+                        4.Eject battery fail
+                        5.Eject battery fail
+                        9.Issue of lease command timed out
+                    faultCause:
+                      type: string
+                      title: Rental fail cause
+                      description: |-
+                        0.Other or undefined errors,
+                        1.Authorize Battery fail
+                        2.Unable to find this battery ID
+                        3.Eject battery fail
+                        4.Eject battery fail
+                        5.Eject battery fail
+                        9.Issue of lease command timed out
+                    returnBatteryId:
+                      type: string
+                      title: return battery ID
+                    returnSlot:
+                      type: integer
+                      title: return battery slot
+                    abnormalBatteryId:
+                      type: string
+                      title: Abnormal battery ID
+                    outStatus:
+                      type: string
+                      title: Popup status
+                      description: Popup status 1-failure, 0-success
+                    popupFailureDescription:
+                      type: string
+                      title: Pop-up failure instructions
+                      description: Pop-up failure instructions
+                    posSn:
+                      type: string
+                      title: POS SN
+                    posInfoStatus:
+                      type: string
+                      title: The online status of the POS machine
+                      description: 1 online 0offline
+                  required:
+                    - cabinetId
+                    - outStatus
+                    - popupFailureDescription
+                    - posSn
+                    - posInfoStatus
+                  x-apifox-orders:
+                    - cabinetId
+                    - infoStatus
+                    - totalCount
+                    - rentableCount
+                    - returnableCount
+                    - icCard
+                    - clientIp
+                    - clientPort
+                    - geoHash
+                    - signal
+                    - batteryList
+                    - onlineTime
+                    - offlineTime
+                    - outBatteryId
+                    - outSlot
+                    - orderId
+                    - faultType
+                    - faultCause
+                    - returnBatteryId
+                    - returnSlot
+                    - abnormalBatteryId
+                    - outStatus
+                    - popupFailureDescription
+                    - posSn
+                    - posInfoStatus
+                  title: Cabinet event data
+                timestamp:
+                  type: string
+                  title: Notification Time
+              required:
+                - agentAccount
+                - event
+                - eventData
+                - timestamp
+              x-apifox-orders:
+                - agentAccount
+                - event
+                - eventData
+                - timestamp
+            example:
+              agentAccount: admins
+              event: CABINET_STATUS
+              eventData:
+                batteryList:
+                  - batteryFaultCause: ''
+                    batteryFaultType: 0
+                    batteryId: FECF007552
+                    faultCause: ''
+                    faultType: 0
+                    infoStatus: Online
+                    slot: 1
+                    vol: 100
+                cabinetId: BJX01553
+                clientIp: 223.104.84.103
+                clientPort: '10797'
+                geoHash: ''
+                infoStatus: Online
+                rentableCount: 1
+                returnableCount: 7
+                signal: '31'
+                totalCount: 8
+              timestamp: '2023-12-29T15:53:18'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+          x-apifox-name: 成功
+      security: []
+      x-apifox-folder: Cabinet Event Push
+      x-apifox-status: developing
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-136068784-run
+      x-apifox-source: api-136068784
+  /cabinet/eventPush/config/get:
+    get:
+      summary: GET Cabinet Event Push Config
+      deprecated: false
+      description: ''
+      tags:
+        - Cabinet Event Push
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/AgentCabinetEventPushConfig'
+                required:
+                  - code
+                  - msg
+                  - data
+                x-apifox-orders:
+                  - code
+                  - msg
+                  - data
+                x-apifox-ignore-properties: []
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Cabinet Event Push
+      x-apifox-status: developing
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-136071391-run
+      x-apifox-source: api-136071391
+  /cdb-open-api/v1/rent/cabinet/query:
+    post:
+      summary: 1.Get Device Info Copy
+      deprecated: false
+      description: ''
+      tags:
+        - Open API
+      parameters:
+        - name: deviceId
+          in: query
+          description: Device SN or ID
+          required: true
+          example: BJD60151
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      priceStrategy:
+                        type: object
+                        properties:
+                          depositAmount:
+                            type: integer
+                            description: Rent a power bank depostist amount.
+                          priceMinute:
+                            type: integer
+                            description: Price per minute
+                          autoRefund:
+                            type: integer
+                            description: Automatic refund
+                          timeoutAmount:
+                            type: integer
+                            description: Overdue amount charged
+                          timeoutDay:
+                            type: integer
+                            description: Timeout days
+                          dailyMaxPrice:
+                            type: integer
+                            description: Maximum daily unit price
+                          freeMinutes:
+                            type: integer
+                            description: Free minutes
+                          currencySymbol:
+                            type: string
+                            description: currency symbol
+                          price:
+                            type: number
+                            description: Price
+                          name:
+                            type: string
+                            description: Name
+                          currency:
+                            type: string
+                            description: 3 letter currency code
+                          shopId:
+                            type: string
+                            description: ' Shop ID'
+                        required:
+                          - depositAmount
+                          - priceMinute
+                          - autoRefund
+                          - timeoutAmount
+                          - timeoutDay
+                          - dailyMaxPrice
+                          - freeMinutes
+                          - currencySymbol
+                          - price
+                          - name
+                          - currency
+                          - shopId
+                        x-apifox-orders:
+                          - depositAmount
+                          - priceMinute
+                          - autoRefund
+                          - timeoutAmount
+                          - timeoutDay
+                          - dailyMaxPrice
+                          - freeMinutes
+                          - currencySymbol
+                          - price
+                          - name
+                          - currency
+                          - shopId
+                      shop:
+                        type: object
+                        properties:
+                          address:
+                            type: string
+                            description: Shop address
+                          priceMinute:
+                            type: string
+                            description: Price per minute
+                          city:
+                            type: string
+                            description: |
+                              City
+                          dailyMaxPrice:
+                            type: integer
+                            description: Maximum daily unit price
+                          latitude:
+                            type: string
+                            description: Latitude
+                          openingTime:
+                            type: string
+                            description: Opening Hours
+                          freeMinutes:
+                            type: integer
+                            description: Free minutes
+                          icon:
+                            type: string
+                            description: Icon
+                          content:
+                            type: string
+                            description: Store Description
+                          province:
+                            type: string
+                            description: Province
+                          price:
+                            type: number
+                            description: Price
+                          name:
+                            type: string
+                            description: Name
+                          deposit:
+                            type: integer
+                            description: Deposit
+                          logo:
+                            type: string
+                            description: Logo
+                          id:
+                            type: string
+                            description: ID
+                          region:
+                            type: string
+                            description: Region
+                          longitude:
+                            type: string
+                            description: Region
+                        required:
+                          - address
+                          - priceMinute
+                          - city
+                          - dailyMaxPrice
+                          - latitude
+                          - openingTime
+                          - freeMinutes
+                          - icon
+                          - content
+                          - province
+                          - price
+                          - name
+                          - deposit
+                          - logo
+                          - id
+                          - region
+                          - longitude
+                        x-apifox-orders:
+                          - address
+                          - priceMinute
+                          - city
+                          - dailyMaxPrice
+                          - latitude
+                          - openingTime
+                          - freeMinutes
+                          - icon
+                          - content
+                          - province
+                          - price
+                          - name
+                          - deposit
+                          - logo
+                          - id
+                          - region
+                          - longitude
+                      batteries:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            slotNum:
+                              type: integer
+                            vol:
+                              type: integer
+                            batteryId:
+                              type: string
+                          required:
+                            - slotNum
+                            - vol
+                            - batteryId
+                          x-apifox-orders:
+                            - slotNum
+                            - vol
+                            - batteryId
+                      cabinet:
+                        type: object
+                        properties:
+                          ip:
+                            type: string
+                            description: Ip address
+                          remark:
+                            type: string
+                            description: Cabinet remark
+                          type:
+                            type: string
+                            description: Cabinet type
+                          slots:
+                            type: integer
+                            description: Slots
+                          qrCode:
+                            type: string
+                            description: QR code
+                          online:
+                            type: boolean
+                            description: Is the cabinet online
+                          emptySlots:
+                            type: integer
+                            description: Not using slots
+                          busySlots:
+                            type: integer
+                            description: Slot already used
+                          id:
+                            type: string
+                            description: ID
+                          shopId:
+                            type: string
+                            description: Shop ID
+                          signal:
+                            type: string
+                            description: Signal
+                          posDeviceId:
+                            type: string
+                            description: Pos device ID
+                        required:
+                          - ip
+                          - remark
+                          - type
+                          - slots
+                          - qrCode
+                          - online
+                          - emptySlots
+                          - busySlots
+                          - id
+                          - shopId
+                          - signal
+                          - posDeviceId
+                        x-apifox-orders:
+                          - ip
+                          - remark
+                          - type
+                          - slots
+                          - qrCode
+                          - online
+                          - emptySlots
+                          - busySlots
+                          - id
+                          - shopId
+                          - signal
+                          - posDeviceId
+                    required:
+                      - priceStrategy
+                      - shop
+                      - batteries
+                      - cabinet
+                    x-apifox-orders:
+                      - priceStrategy
+                      - shop
+                      - batteries
+                      - cabinet
+                required:
+                  - msg
+                  - code
+                  - data
+                x-apifox-orders:
+                  - msg
+                  - code
+                  - data
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Open API
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-178273644-run
+      x-apifox-source: api-178273644
+  /shop/priceStrategy/page:
+    post:
+      summary: 1.Get Price Strategy Page
+      deprecated: false
+      description: 1.Get Shop Price Strategy Page
+      tags:
+        - Advance API/PriceStrategy
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenPriceStrategyQueryDto'
+              description: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/PriceStrategy
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-255199665-run
+      x-apifox-source: api-255199665
+  /shop/priceStrategy/detail/{priceId}:
+    get:
+      summary: 2.Get Price Strategy Detail
+      deprecated: false
+      description: 2.Get Shop Price Strategy Detail
+      tags:
+        - Advance API/PriceStrategy
+      parameters:
+        - name: priceId
+          in: path
+          description: price id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/PriceStrategy
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-255199666-run
+      x-apifox-source: api-255199666
+  /shop/priceStrategy/saveOrUpdate:
+    post:
+      summary: 3.Create Or Update Price Strategy
+      deprecated: false
+      description: 3.Create Or Update Price Strategy
+      tags:
+        - Advance API/PriceStrategy
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenPriceStrategySaveDto'
+              description: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/PriceStrategy
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-255199667-run
+      x-apifox-source: api-255199667
+  /shop/priceStrategy/delete:
+    post:
+      summary: 4.Delete Price Strategy
+      deprecated: false
+      description: 4.Delete Price Strategyy
+      tags:
+        - Advance API/PriceStrategy
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+              description: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/PriceStrategy
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-255199668-run
+      x-apifox-source: api-255199668
+  /shop/priceStrategy/bindShop:
+    post:
+      summary: 5.Shop Bind Price Strategy
+      deprecated: false
+      description: 5.Shop Bind Price Strategy
+      tags:
+        - Advance API/PriceStrategy
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenPriceStrategyShopBindDto'
+              description: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/PriceStrategy
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-255199669-run
+      x-apifox-source: api-255199669
+  /shop/priceStrategy/unbindShop:
+    post:
+      summary: 6.Shop Unbind Price Strategy
+      deprecated: false
+      description: 6.Shop Unbind Price Strategy
+      tags:
+        - Advance API/PriceStrategy
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenPriceStrategyShopUnbindDto'
+              description: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/PriceStrategy
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-255199670-run
+      x-apifox-source: api-255199670
+  /cabinet/bindAd:
+    post:
+      summary: Update cabinet advertising information
+      deprecated: false
+      description: Update cabinet advertising information
+      tags:
+        - Advance API/Cabinet
+      parameters:
+        - name: id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: dailiId
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenAdPublishDTO'
+              description: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+              example:
+                '': {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-281340763-run
+      x-apifox-source: api-281340763
+  /cabinet/unbindShop:
+    get:
+      summary: Device unbound to merchant
+      deprecated: false
+      description: ''
+      tags:
+        - Advance API/Cabinet
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                description: Device ID
+              description: List of device IDs
+            example:
+              - DTA00001
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: response message
+                  code:
+                    type: integer
+                    description: response code
+                required:
+                  - msg
+                  - code
+                x-apifox-orders:
+                  - msg
+                  - code
+              example:
+                msg: 操作成功
+                code: 0
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: developing
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-373187165-run
+      x-apifox-source: api-373187165
+  /cabinet/publishAd:
+    post:
+      summary: Device advertisement publish
+      deprecated: false
+      description: Device advertisement publish
+      tags:
+        - Advance API/Cabinet
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cabinetIdList:
+                  type: array
+                  items:
+                    type: string
+                  description: |-
+                    Cabinet ID List
+                    机柜ID列表
+                isRestart:
+                  type: boolean
+                  description: |-
+                    Restart immediately: false - do not restart, true - restart
+                    是否立即重启：false-不重启，true-重启
+                adConfigList:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: |-
+                          Position code: P_GG_48_TYPE,0 {composition: 'P_GG_'+cabinet slot count+'_TYPE,'+position} Position: 0-middle area; 1-lower left, upper part; 2-right, lower part; 3-LOGO in the QR code>)
+                          位置代码：P_GG_48_TYPE,0 {组成：'P_GG_'+机柜卡口数+‘_TYPE,’+位置} 位置：0-中间区域 1-左下,上部 2-右边,下部 3-二维码里面的LOGO>）
+                      mediaType:
+                        type: string
+                        description: |-
+                          Media type (image, video)
+                          媒体类型(image,video)
+                      mediaPath:
+                        type: string
+                        description: |-
+                          Media path (mediaType=image/video, required)
+                          媒体路径
+                      startDate:
+                        type: string
+                        description: |-
+                          Start time
+                          开始时间
+                      endDate:
+                        type: string
+                        description: |-
+                          End time
+                          结束时间
+                      startTime:
+                        type: string
+                        description: |-
+                          Start time period
+                          开始时间段
+                      endTime:
+                        type: string
+                        description: |-
+                          End time period
+                          结束时间段
+                    x-apifox-orders:
+                      - code
+                      - mediaType
+                      - mediaPath
+                      - startDate
+                      - endDate
+                      - startTime
+                      - endTime
+                  description: |-
+                    Advertisement Configuration List
+                    广告配置列表
+              required:
+                - cabinetIdList
+                - isRestart
+                - adConfigList
+              x-apifox-orders:
+                - cabinetIdList
+                - isRestart
+                - adConfigList
+            example:
+              cabinetIdList:
+                - DTA02514
+                - DTA19454
+              restart: true
+              adConfigList:
+                - code: P_GG_8_TYPE,0
+                  mediaType: video
+                  mediaPath: https://m.datasps.com/uploads/20260106/659adef8ffd74bacaac04140d0038514.mp4
+                  startDate: '2026-01-13 17:30:00'
+                  endDate: '2026-01-17 00:00:00'
+                  startTime: ''
+                  endTime: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Advance API/Cabinet
+      x-apifox-status: developing
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-405524722-run
+      x-apifox-source: api-405524722
+  /oauth2/login:
+    post:
+      summary: OAuth2登录
+      deprecated: false
+      description: |
+        OAuth2 Login
+        The client needs to first hash the password using SHA256 before transmitting it.
+        Log in with the OpenAccount account, and a token that allows access to the open-api service and web-api service will be returned. 
+        When accessing the open-api service, the parameter 'Authorization' needs to be added to the request header, and the value should be in the format of "Bearer + the returned token".
+        For example: Bearer 40c28166946f366741c06e47b4f3729e
+        When accessing the web-api service, you need to add the parameter 'token' to the request header, with the value being the returned token only.
+        OAuth2 登录
+        客户端需先对密码进行 SHA256 哈希后再传输
+        用OpenAccount账号登录，返回可访问open-api服务和web-api服务的token，
+        访问open-api服务时，需要在请求头上面添加参数'Authorization'，值的格式为Bearer +返回的token
+        例如：Bearer 40c28166946f366741c06e47b4f3729e
+        访问web-api服务时，需要在请求头上面添加参数'token'，值的格式为返回的token即可
+      tags:
+        - Auth/OpenLoginController|OAuth2登录接口
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: 密码(SHA256哈希)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponse'
+                description: 返回数据
+          headers: {}
+          x-apifox-name: ''
+      security: []
+      x-apifox-folder: Auth/OpenLoginController|OAuth2登录接口
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-442646487-run
+      x-apifox-source: api-442646487
+  /rent/order/query:
+    post:
+      summary: 3.Query Rent Order Status
+      deprecated: false
+      description: Get query result from callbackUrl
+      tags:
+        - Open API
+      parameters:
+        - name: tradeNo
+          in: query
+          description: Trade No
+          required: true
+          example: '23022111552701091626'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Open API
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-67396391-run
+      x-apifox-source: api-67396391
+  /rent/order/detail:
+    get:
+      summary: 5.Get Order Detail
+      deprecated: false
+      description: ''
+      tags:
+        - Open API
+      parameters:
+        - name: tradeNo
+          in: query
+          description: Trade No
+          required: true
+          example: '23022111552701091626'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      cabinetId:
+                        type: string
+                        title: 充电柜ID
+                        description: Cabinet ID
+                      orderId:
+                        type: string
+                        title: 订单ID
+                        description: Order ID
+                      batteryId:
+                        type: string
+                        title: 电池ID
+                        description: Battery ID
+                      dailyMaxPrice:
+                        type: integer
+                        title: 每日最高价格
+                        description: Maximum daily unit price
+                      freeMinutes:
+                        type: integer
+                        title: 免费分钟数
+                        description: Free minutes
+                      orderAmount:
+                        type: integer
+                        title: 点单金额
+                        description: Order amount
+                      borrowTime:
+                        type: string
+                        title: 租借时间
+                        description: Borrow time
+                      price:
+                        type: number
+                        title: 单价
+                        description: Price
+                      currency:
+                        type: string
+                        title: 币种
+                        description: 3 letter currency code
+                      deviceType:
+                        type: string
+                        title: 设备型号
+                        description: Device type
+                      priceMinute:
+                        type: string
+                        title: 单价每分
+                        description: Free minutes
+                      borrowSlot:
+                        type: integer
+                        title: 借用插口
+                        description: Borrow slot
+                      returnTime:
+                        type: string
+                        title: 返回时间
+                        description: Return time
+                      borrowStatus:
+                        type: integer
+                        description: 0. Not leased, 1. Under lease, 2. Revoked, 3. Returned, 4. In doubt, 5. Timeout is returned. 6. Charging is suspended
+                        title: 租借状态
+                      deposit:
+                        type: integer
+                        title: 押金
+                        description: Deposit
+                    required:
+                      - cabinetId
+                      - orderId
+                      - batteryId
+                      - dailyMaxPrice
+                      - freeMinutes
+                      - orderAmount
+                      - borrowTime
+                      - price
+                      - currency
+                      - deviceType
+                      - priceMinute
+                      - borrowSlot
+                      - returnTime
+                      - borrowStatus
+                      - deposit
+                    x-apifox-orders:
+                      - cabinetId
+                      - orderId
+                      - batteryId
+                      - dailyMaxPrice
+                      - freeMinutes
+                      - orderAmount
+                      - borrowTime
+                      - price
+                      - currency
+                      - deviceType
+                      - priceMinute
+                      - borrowSlot
+                      - returnTime
+                      - borrowStatus
+                      - deposit
+                required:
+                  - msg
+                  - code
+                  - data
+                x-apifox-orders:
+                  - msg
+                  - code
+                  - data
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Open API
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-67396392-run
+      x-apifox-source: api-67396392
+  /rent/order/close:
+    post:
+      summary: 4.Mark order status as completed
+      deprecated: false
+      description: ''
+      tags:
+        - Open API
+      parameters:
+        - name: tradeNo
+          in: query
+          description: Trade No
+          required: true
+          example: '23022111552701091626'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                x-apifox-orders: []
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Open API
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-67396393-run
+      x-apifox-source: api-67396393
+  /rent/cabinet/query:
+    get:
+      summary: 1.Get Device Info
+      deprecated: false
+      description: ''
+      tags:
+        - Open API
+      parameters:
+        - name: deviceId
+          in: query
+          description: Device SN or ID
+          required: true
+          example: BJH02347
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      priceStrategy:
+                        type: object
+                        properties:
+                          depositAmount:
+                            type: integer
+                            description: Rent a power bank depostist amount.
+                            title: 租借充电宝押金
+                          priceMinute:
+                            type: integer
+                            description: Price per minute
+                            title: 每分钟价格
+                          autoRefund:
+                            type: integer
+                            description: Automatic refund
+                            title: 自动退款
+                          timeoutAmount:
+                            type: integer
+                            title: 超时金额
+                            description: Overdue amount charged
+                          timeoutDay:
+                            type: integer
+                            title: 超时天数
+                            description: Timeout days
+                          dailyMaxPrice:
+                            type: integer
+                            title: 每日最高价格
+                            description: Maximum daily unit price
+                          freeMinutes:
+                            type: integer
+                            title: 免费时间/分
+                            description: Free minutes
+                          currencySymbol:
+                            type: string
+                            title: 货币符号
+                            description: currency symbol
+                          price:
+                            type: number
+                            title: 单价
+                            description: Price
+                          name:
+                            type: string
+                            title: 名称
+                            description: Name
+                          currency:
+                            type: string
+                            title: 币种
+                            description: 3 letter currency code
+                          shopId:
+                            type: string
+                            title: 店铺ID
+                            description: ' Shop ID'
+                        required:
+                          - depositAmount
+                          - priceMinute
+                          - autoRefund
+                          - timeoutAmount
+                          - timeoutDay
+                          - dailyMaxPrice
+                          - freeMinutes
+                          - currencySymbol
+                          - price
+                          - name
+                          - currency
+                          - shopId
+                        x-apifox-orders:
+                          - depositAmount
+                          - priceMinute
+                          - autoRefund
+                          - timeoutAmount
+                          - timeoutDay
+                          - dailyMaxPrice
+                          - freeMinutes
+                          - currencySymbol
+                          - price
+                          - name
+                          - currency
+                          - shopId
+                      shop:
+                        type: object
+                        properties:
+                          address:
+                            type: string
+                            title: 店铺地址
+                            description: Shop address
+                          priceMinute:
+                            type: string
+                            title: 每分钟价格
+                            description: Price per minute
+                          city:
+                            type: string
+                            title: 城市
+                            description: City
+                          dailyMaxPrice:
+                            type: integer
+                            title: 每日最高价格
+                            description: Maximum daily unit price
+                          latitude:
+                            type: string
+                            title: 维度
+                            description: Latitude
+                          openingTime:
+                            type: string
+                            title: 开放时间
+                            description: Opening Hours
+                          freeMinutes:
+                            type: integer
+                            title: 免费时间/分
+                            description: Free minutes
+                          icon:
+                            type: string
+                            title: 图标
+                            description: Icon
+                          content:
+                            type: string
+                            title: 内容
+                            description: Store Description
+                          province:
+                            type: string
+                            title: 省份
+                            description: Province
+                          price:
+                            type: number
+                            title: 单价
+                            description: Price
+                          name:
+                            type: string
+                            title: 名称
+                            description: Name
+                          deposit:
+                            type: integer
+                            title: 押金
+                            description: Deposit
+                          logo:
+                            type: string
+                            title: Logo
+                            description: Logo
+                          id:
+                            type: string
+                            title: ID
+                            description: ID
+                          region:
+                            type: string
+                            title: 区
+                            description: Region
+                          longitude:
+                            type: string
+                            title: 经度
+                            description: Longitude
+                        required:
+                          - address
+                          - priceMinute
+                          - city
+                          - dailyMaxPrice
+                          - latitude
+                          - openingTime
+                          - freeMinutes
+                          - icon
+                          - content
+                          - province
+                          - price
+                          - name
+                          - deposit
+                          - logo
+                          - id
+                          - region
+                          - longitude
+                        x-apifox-orders:
+                          - address
+                          - priceMinute
+                          - city
+                          - dailyMaxPrice
+                          - latitude
+                          - openingTime
+                          - freeMinutes
+                          - icon
+                          - content
+                          - province
+                          - price
+                          - name
+                          - deposit
+                          - logo
+                          - id
+                          - region
+                          - longitude
+                      batteries:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            slotNum:
+                              type: integer
+                            vol:
+                              type: integer
+                            batteryId:
+                              type: string
+                          required:
+                            - slotNum
+                            - vol
+                            - batteryId
+                          x-apifox-orders:
+                            - slotNum
+                            - vol
+                            - batteryId
+                      cabinet:
+                        type: object
+                        properties:
+                          ip:
+                            type: string
+                            title: ip
+                            description: Ip address
+                          remark:
+                            type: string
+                            description: Cabinet remark
+                            title: 备注
+                          type:
+                            type: string
+                            description: Cabinet type
+                            title: 类型
+                          slots:
+                            type: integer
+                            title: 插口
+                            description: Slots
+                          qrCode:
+                            type: string
+                            description: QR code
+                            title: 二维码
+                          online:
+                            type: boolean
+                            title: 是否在线
+                            description: Is the cabinet online
+                          emptySlots:
+                            type: integer
+                            title: 空插口
+                            description: Not using slots
+                          busySlots:
+                            type: integer
+                            title: 忙线插口
+                            description: Slot already used
+                          id:
+                            type: string
+                            title: ID
+                            description: ID
+                          shopId:
+                            type: string
+                            title: 店铺ID
+                            description: Shop ID
+                          signal:
+                            type: string
+                            title: 签名
+                            description: Signal
+                          posDeviceId:
+                            type: string
+                            title: pos机ID
+                            description: Pos device ID
+                        required:
+                          - ip
+                          - remark
+                          - type
+                          - slots
+                          - qrCode
+                          - online
+                          - emptySlots
+                          - busySlots
+                          - id
+                          - shopId
+                          - signal
+                          - posDeviceId
+                        x-apifox-orders:
+                          - ip
+                          - remark
+                          - type
+                          - slots
+                          - qrCode
+                          - online
+                          - emptySlots
+                          - busySlots
+                          - id
+                          - shopId
+                          - signal
+                          - posDeviceId
+                    required:
+                      - priceStrategy
+                      - shop
+                      - batteries
+                      - cabinet
+                    x-apifox-orders:
+                      - priceStrategy
+                      - shop
+                      - batteries
+                      - cabinet
+                required:
+                  - msg
+                  - code
+                  - data
+                x-apifox-orders:
+                  - msg
+                  - code
+                  - data
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Open API
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-67396394-run
+      x-apifox-source: api-67396394
+  /rent/order/create:
+    post:
+      summary: 2.Create Rent Order
+      deprecated: false
+      description: ''
+      tags:
+        - Open API
+      parameters:
+        - name: deviceId
+          in: query
+          description: Device SN or ID
+          required: true
+          example: DTA19484
+          schema:
+            type: string
+        - name: callbackURL
+          in: query
+          description: |-
+            Rent Callback URL
+            Method : Post
+            ContentType :  application/x-www-form-urlencoded
+            Params:
+            status : 0-Rent Fail 1-Rent success 2-Return Success
+            tradeNo
+          required: true
+          example: https://example.com/cdb-open-api/v1/callback
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: integer
+                  data:
+                    type: object
+                    properties:
+                      tradeNo:
+                        type: string
+                        title: 交易编号
+                        description: transaction number
+                    required:
+                      - tradeNo
+                    x-apifox-orders:
+                      - tradeNo
+                required:
+                  - msg
+                  - code
+                  - data
+                x-apifox-orders:
+                  - msg
+                  - code
+                  - data
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Open API
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-67396395-run
+      x-apifox-source: api-67396395
+  /rent/cabinet/list:
+    post:
+      summary: 6.Get Deivice List
+      deprecated: false
+      description: ''
+      tags:
+        - Open API
+      parameters:
+        - name: coordType
+          in: query
+          description: 'Coordinate system: WGS-84, GCJ-02, BD-09'
+          required: true
+          example: GCJ-02
+          schema:
+            type: string
+        - name: zoomLevel
+          in: query
+          description: 'Map scale: 1-8, geoHash scale：1、2500km；2、630km；3、78km；4、30km；5、2.4km; 6、610m；7、76m；8、19m'
+          required: true
+          example: '5'
+          schema:
+            type: string
+        - name: lat
+          in: query
+          description: Longitude string
+          required: true
+          example: '22.989442'
+          schema:
+            type: string
+        - name: lng
+          in: query
+          description: Latitude String
+          required: true
+          example: '113.327761'
+          schema:
+            type: string
+        - name: showPrice
+          in: query
+          description: Obtain merchant price information, default to true
+          required: false
+          example: 'true'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                  code:
+                    type: integer
+                  list:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        price:
+                          type: object
+                          properties:
+                            priceId:
+                              type: integer
+                              description: Price ID
+                            freeDuration:
+                              type: string
+                              description: Free usage time (minutes)
+                              nullable: true
+                            price:
+                              type: string
+                              nullable: true
+                            chargeUnit:
+                              type: string
+                              description: charge unit
+                              nullable: true
+                            dailyCapAmount:
+                              type: string
+                              description: Daily cap amount
+                              nullable: true
+                            deposit:
+                              type: string
+                              description: deposit
+                              nullable: true
+                          required:
+                            - priceId
+                            - freeDuration
+                            - price
+                            - chargeUnit
+                            - dailyCapAmount
+                            - deposit
+                          x-apifox-orders:
+                            - priceId
+                            - freeDuration
+                            - price
+                            - chargeUnit
+                            - dailyCapAmount
+                            - deposit
+                          description: Price Data
+                        cabinet:
+                          type: object
+                          properties:
+                            batteryNum:
+                              type: string
+                              description: Number of batteries
+                            freeNum:
+                              type: string
+                              description: Borrowable quantity
+                            infoStatus:
+                              type: string
+                              description: Device status(0 offline,1 online)
+                          required:
+                            - batteryNum
+                            - freeNum
+                            - infoStatus
+                          x-apifox-orders:
+                            - batteryNum
+                            - freeNum
+                            - infoStatus
+                          description: Cabinet Data
+                        shop:
+                          type: object
+                          properties:
+                            shopName:
+                              type: string
+                              description: Shop Name
+                            shopAddress:
+                              type: string
+                              description: Shop Address
+                            mobile:
+                              type: string
+                              description: mobile
+                            distance:
+                              type: string
+                              description: distance
+                            longitude:
+                              type: string
+                              description: longitude
+                            latitude:
+                              type: string
+                              description: latitude
+                            shopBanner:
+                              type: string
+                              description: Shop Banner
+                            shopIcon:
+                              type: string
+                              description: Shop Icon
+                            distanceNumber:
+                              type: number
+                              description: Distance Number
+                            sceneType:
+                              type: string
+                              description: Merchant scenario types (1 catering, 2 medical, 3 bars, 4 shopping malls, 5 foot baths, 6 hotels, 7 internet cafes, 8KTV, 9 airports, 10 high-speed rail stations, 11 bus stations, 0 others, default to 0)
+                            id:
+                              type: string
+                              description: Shop Id
+                          required:
+                            - id
+                            - shopName
+                            - shopAddress
+                            - mobile
+                            - distance
+                            - longitude
+                            - latitude
+                            - shopBanner
+                            - shopIcon
+                            - distanceNumber
+                            - sceneType
+                          x-apifox-orders:
+                            - id
+                            - shopName
+                            - shopAddress
+                            - mobile
+                            - distance
+                            - longitude
+                            - latitude
+                            - shopBanner
+                            - shopIcon
+                            - distanceNumber
+                            - sceneType
+                          description: Shop Data
+                      x-apifox-orders:
+                        - price
+                        - cabinet
+                        - shop
+                required:
+                  - msg
+                  - code
+                  - list
+                x-apifox-orders:
+                  - msg
+                  - code
+                  - list
+          headers: {}
+          x-apifox-name: 成功
+      security:
+        - basic: []
+      x-apifox-folder: Open API
+      x-apifox-status: released
+      x-run-in-apifox: https://app.apifox.com/web/project/2416667/apis/api-99966818-run
+      x-apifox-source: api-99966818
+components:
+  schemas:
+    RestResponse:
+      type: object
+      properties:
+        key:
+          type: object
+          properties: {}
+          x-apifox-orders: []
+          x-apifox-ignore-properties: []
+      x-apifox-orders:
+        - key
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    CdbShopEntity:
+      type: object
+      properties:
+        pNewid:
+          type: string
+        pName:
+          type: string
+        pSceneType:
+          type: integer
+          title: ' Other 0 House 1 Outside the apartment 2 Outside the hospital 3 Semi independent 4 Commercial building 5 Inside the building 6 Outside the building 7 Factory area 8 In the square 9 Outside the square 10 Amusement Park 11 Lakeside 12 Independent house 13 Independent household 14 Off court 15 Outside the group house 16 street shop 17 Street house 18 Inside the hotel 19 Outside the hotel 20 Car 21 Bar 22 Café 23 Nightclub 24 Restaurant 25 Shopping Centre 26 Convenience Store 27 Retail Store 28 Public Transport 29 Airport 30 Stadium 31 Event 32 Hospital 33 Health/Fitness 34 University 35 Library 36'
+        pStoreType:
+          type: integer
+          title: 0 Other 1 center, 2 Chinese food, 3 park, 4 leisure, 5 accommodation, 6 health care, 7 fitness, 8 venues, 9 entertainment, 10 pets, 11 education, 12 service, 13 stalls, 14 hookah 15 games, 16 baking, 17 barbecue, 18 haircut, 19 beauty, 20 clinic, 21 car workshop, 22 car shop, 23 mail, 24 bar, 25 hotel, 26 retail, 27 restaurant bar, 28 catering, 29 drinks
+        pAddress:
+          type: string
+        pJingdu:
+          type: string
+        pWeidu:
+          type: string
+        pAuditor:
+          type: integer
+          title: 0-disable 1-enable
+        pContent:
+          type: string
+        pCurrency:
+          type: string
+          title: ISO Currency Code
+        pLocationId:
+          type: string
+          title: If you have StripePOS and place an order using our client, this field is mandatory and the specific value needs to be obtained from Stripe
+        pLogo:
+          type: string
+      title: CdbShopEntity
+      x-apifox-orders:
+        - pNewid
+        - pName
+        - pSceneType
+        - pStoreType
+        - pAddress
+        - pJingdu
+        - pWeidu
+        - pAuditor
+        - pContent
+        - pCurrency
+        - pLocationId
+        - pLogo
+      required:
+        - pNewid
+        - pName
+        - pJingdu
+        - pWeidu
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    AgentCabinetEventPushConfig:
+      type: object
+      properties:
+        pushUrl:
+          type: string
+          title: URL for receiving cabinet event push notifications
+          description: If the subscribed cabinet event does not have a separate push URL configured, this value will be used.
+        eventSubscriptions:
+          type: array
+          items:
+            type: object
+            properties:
+              event:
+                type: string
+                title: Cabinet event
+                description: 'CABINET_ONLINE: Cabinet online event CABINET_OFFLINE: Cabinet offline event CABINET_STATUS: Cabinet status report event BATTERY_IN: Battery in eventBATTERY_BORROW_OUT: Battery be borrowed out event BATTERY_ABNORMAL_WARNING: Battery abnormality warning event BATTERY_POPUP: Battery repair pop-up event ADMIN_RENTAL_ORDER:Backstage management issues rental orders'
+              pushUrl:
+                type: string
+                title: Receive URL for current cabinet event push
+                description: You can configure a separate push URL for this cabinet event
+              enable:
+                type: boolean
+                title: Enable event push for this cabinet
+            x-apifox-orders:
+              - event
+              - pushUrl
+              - enable
+            required:
+              - event
+              - enable
+            x-apifox-ignore-properties: []
+          title: Subscription requires receiving push cabinet events
+      x-apifox-orders:
+        - pushUrl
+        - eventSubscriptions
+      required:
+        - pushUrl
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    OpenPriceStrategyQueryDto:
+      type: object
+      properties:
+        size:
+          type: integer
+          description: 页面大小
+          default: 10
+        current:
+          type: integer
+          description: 当前页
+          default: 1
+        shopId:
+          type: string
+          description: 商户ID
+        priceId:
+          type: integer
+          description: 价格ID
+        name:
+          type: string
+          description: 名称
+      x-apifox-orders:
+        - size
+        - current
+        - shopId
+        - priceId
+        - name
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    OpenPriceStrategySaveDto:
+      type: object
+      properties:
+        priceId:
+          type: integer
+          description: 价格ID，新增为null
+        name:
+          type: string
+          description: 价格策略名称
+          title: Price Strategy Name
+        shopId:
+          type: string
+          description: 店铺ID
+          title: 'Shop ID '
+          nullable: true
+        type:
+          type: integer
+          description: |-
+            价格策略类型:
+              1:高级模式，按时长单位计费，有24小时封顶金额
+              2:时间表,按时长查询时间表的对应价格
+              3:通用模式
+          title: 'Price strategy type: 1. Advanced mode, billed on a per hour basis with a 24-hour maximum amount; 2. Timetable, corresponding price for query on a per hour basis; 3. General mode'
+        customType:
+          type: integer
+          description: |-
+            自定义价格策略:
+              0:通用
+              1:POS
+          title: 'Custom pricing strategy: 0: Universal 1: POS'
+        priority:
+          type: integer
+          description: 优先级
+          title: priority
+        isDeposit:
+          type: boolean
+          description: 是否收押金
+        depositAmount:
+          type: number
+          description: 押金金额
+          title: Deposit amount
+        timeoutAmount:
+          type: number
+          description: 超时金额
+          title: Overdue amount
+        timeoutDay:
+          type: integer
+          description: 超时天数
+          title: Timeout days
+        freeMinutes:
+          type: integer
+          description: 免费使用分钟
+          title: Free usage minutes
+        dayUseFreeCount:
+          type: integer
+          description: 租客每日免费时长使用次数
+          title: Tenant's daily free usage frequency
+        price:
+          type: number
+          description: 计费单价
+          title: Billing unit price
+        priceTime:
+          type: integer
+          description: 计费时间（分钟/小时/天
+          title: Billing time (minutes/hour/day)
+        priceUnit:
+          type: integer
+          description: 计费单位粒度（0-分钟 1-小时 2-天）
+          title: Billing unit granularity (0-minute, 1-hour, 2-day)
+        dailyMaxPrice:
+          type: number
+          description: 日封顶金额
+          title: Daily cap amount
+        priceStrategyDetailList:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenPriceStrategyDetailSaveDto'
+            description: 价格策略明细(时间表)
+          description: 价格策略明细(时间表)
+          title: Price Strategy Details (Schedule)
+      x-apifox-orders:
+        - priceId
+        - name
+        - shopId
+        - type
+        - customType
+        - priority
+        - isDeposit
+        - depositAmount
+        - timeoutAmount
+        - timeoutDay
+        - freeMinutes
+        - dayUseFreeCount
+        - price
+        - priceTime
+        - priceUnit
+        - dailyMaxPrice
+        - priceStrategyDetailList
+      required:
+        - name
+        - type
+        - customType
+        - depositAmount
+        - timeoutAmount
+        - timeoutDay
+        - freeMinutes
+        - price
+        - priceTime
+        - priceUnit
+        - dailyMaxPrice
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    OpenPriceStrategyDetailSaveDto:
+      type: object
+      properties:
+        startMinute:
+          type: integer
+          description: 开始分钟
+          title: Start minute
+        endMinute:
+          type: integer
+          description: 结束分钟
+          title: End minute
+        setcionFee:
+          type: number
+          description: 此段收费金额
+          title: The fee amount for this section
+        totalFee:
+          type: number
+          description: 总收费金额
+          title: Total fee amount
+        seqno:
+          type: integer
+          description: 序号
+          title: Serial Number
+      x-apifox-orders:
+        - startMinute
+        - endMinute
+        - setcionFee
+        - totalFee
+        - seqno
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    OpenPriceStrategyShopBindDto:
+      type: object
+      properties:
+        shopId:
+          type: string
+          description: 店铺ID
+        priceId:
+          type: integer
+          description: 价格ID
+        customType:
+          type: integer
+          description: |-
+            自定义价格策略:
+              0:通用
+              1:POS
+      x-apifox-orders:
+        - shopId
+        - priceId
+        - customType
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    OpenPriceStrategyShopUnbindDto:
+      type: object
+      properties:
+        shopId:
+          type: string
+          description: 店铺ID
+        customType:
+          type: integer
+          description: |-
+            自定义价格策略:
+              0:通用
+              1:POS
+      x-apifox-orders:
+        - shopId
+        - customType
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    OpenAdPublishDTO:
+      type: object
+      properties:
+        cabinetIdList:
+          type: array
+          items:
+            type: string
+          description: 机柜ID列表
+          title: Cabinet ID List
+        isRestart:
+          type: boolean
+          description: 是否立即重启：false-不重启，true-重启
+          title: 'Restart immediately: false - do not restart, true - restart'
+        adConfigList:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenAdConfigDTO'
+            description: OpenAPI 广告配置DTO
+          description: 广告配置列表
+          title: Advertisement Configuration List
+      x-apifox-orders:
+        - cabinetIdList
+        - isRestart
+        - adConfigList
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    OpenAdConfigDTO:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 位置代码：P_GG_48_TYPE,0 {组成：'P_GG_'+机柜卡口数+‘_TYPE,’+位置} 位置：0-中间区域 1-左下,上部 2-右边,下部 3-二维码里面的LOGO>）
+          title: 'Position code: P_GG_48_TYPE,0 {composition: ''P_GG_''+cabinet slot count+''_TYPE,''+position} Position: 0-middle area; 1-lower left, upper part; 2-right, lower part; 3-LOGO in the QR code>)'
+        mediaType:
+          type: string
+          description: 媒体类型(image,video,programSheet(轮播图))
+          title: Media type (image, video, programSheet (slideshow))
+        mediaPath:
+          type: string
+          description: 媒体路径
+          title: Media path (mediaType=image/video, required)
+        startDate:
+          type: string
+          description: 开始时间
+          title: Start time
+        endDate:
+          type: string
+          description: 结束时间
+          title: End time
+        startTime:
+          type: string
+          description: 开始时间段
+          title: Start time period
+        endTime:
+          type: string
+          description: 结束时间段
+          title: End time period
+        videoList:
+          type: array
+          items:
+            $ref: '#/components/schemas/VedioJsonDto'
+            description: 中央区域轮播图明细列表
+          description: 中央视频广告区配置列表信息（mediaType=programSheet时，非空）
+          title: Central video advertising area configuration list information (non-empty when mediaType=programSheet)
+      x-apifox-orders:
+        - code
+        - mediaType
+        - mediaPath
+        - startDate
+        - endDate
+        - startTime
+        - endTime
+        - videoList
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+    VedioJsonDto:
+      type: object
+      properties:
+        key:
+          type: string
+          description: 广告key
+        version:
+          type: integer
+          description: 广告版本号（例如，1，2，3；机柜在重启时会校验当前版本号，若大于之前版本，机柜重启后会自动更新广告配置）
+          title: Ad version number (for example, 1, 2, 3; the cabinet will check the current version number when it restarts. If it is greater than the previous version, the cabinet will automatically update the ad configuration after restarting)
+        seq:
+          type: integer
+          description: 图片序号（轮播序号-例如，1，2，3）
+          title: Image sequence number (carousel sequence number - for example, 1, 2, 3)
+        url:
+          type: string
+          description: 图片地址
+          title: Image URL
+        playoutTime:
+          type: integer
+          description: |-
+            广告播放时间
+            广告播放时间（单位:秒）
+          title: 'Advertisement playing time Advertisement playing time (unit: seconds)'
+      x-apifox-orders:
+        - key
+        - version
+        - seq
+        - url
+        - playoutTime
+      title: Central video advertising area configuration list information (non-empty when mediaType=programSheet)
+      x-apifox-ignore-properties: []
+      x-apifox-folder: ''
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+security:
+  - basic: []

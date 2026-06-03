@@ -9,11 +9,13 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { getPriceStrategyPage, getShopList } from "@/lib/api-client";
+import { getApiToken } from "@/lib/get-api-token";
 import {
   PriceStrategyFormDialog,
   DeletePriceStrategyButton,
   BindShopDialog,
   UnbindShopButton,
+  PriceStrategyDetailDialog,
 } from "./pricing-dialogs";
 
 const TYPE_MAP: Record<number, string> = {
@@ -23,9 +25,10 @@ const TYPE_MAP: Record<number, string> = {
 };
 
 export default async function PricingPage() {
+  const token = await getApiToken();
   const [strategyResponse, shopResponse] = await Promise.all([
-    getPriceStrategyPage(),
-    getShopList(),
+    getPriceStrategyPage({}, token),
+    getShopList(token),
   ]);
 
   const strategies = ((strategyResponse as any).data as any)?.records || [];
@@ -39,7 +42,7 @@ export default async function PricingPage() {
             Pricing Strategies
           </h1>
           <p className="text-sm text-muted-foreground">
-            Manage global and shop-specific billing rules.
+            Set pricing per venue — bind a strategy to each location
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -57,17 +60,16 @@ export default async function PricingPage() {
             <TableRow>
               <TableHead>Strategy Name</TableHead>
               <TableHead>Type</TableHead>
-              <TableHead>Bound Shop</TableHead>
+              <TableHead>Bound Venue</TableHead>
               <TableHead>Deposit</TableHead>
               <TableHead>Base Rate</TableHead>
-              <TableHead>Daily Cap</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {strategies.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   No pricing strategies found.
                 </TableCell>
               </TableRow>
@@ -103,7 +105,7 @@ export default async function PricingPage() {
                     <TableCell>
                       {strategy.isDeposit ? (
                         <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                          <ShieldAlert className="h-3 w-3" />¥
+                          <ShieldAlert className="h-3 w-3" />$
                           {strategy.depositAmount}
                         </div>
                       ) : (
@@ -114,9 +116,9 @@ export default async function PricingPage() {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
-                        ¥{strategy.price} /{" "}
+                        ${strategy.price} /{" "}
                         {strategy.priceUnit === 0
-                          ? "min"
+                          ? "10 min"
                           : strategy.priceUnit === 1
                           ? "hr"
                           : "day"}
@@ -125,9 +127,12 @@ export default async function PricingPage() {
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell>¥{strategy.dailyMaxPrice}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
+                        <PriceStrategyDetailDialog
+                          priceId={strategy.priceId}
+                          name={strategy.name}
+                        />
                         {strategy.shopId ? (
                           <UnbindShopButton
                             shopId={strategy.shopId}

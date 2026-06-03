@@ -8,7 +8,9 @@ import {
   Store,
   ShoppingCart,
   DollarSign,
-  Code,
+  Map,
+  Megaphone,
+  HandCoins,
   Settings,
   LogOut,
   ChevronUp,
@@ -43,17 +45,22 @@ const navItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Devices",
+    title: "Kiosks",
     href: "/devices",
     icon: HardDrive,
   },
   {
-    title: "Shops",
+    title: "Map",
+    href: "/map",
+    icon: Map,
+  },
+  {
+    title: "Venues",
     href: "/shops",
     icon: Store,
   },
   {
-    title: "Orders",
+    title: "Rentals",
     href: "/orders",
     icon: ShoppingCart,
   },
@@ -62,12 +69,21 @@ const navItems = [
     href: "/pricing",
     icon: DollarSign,
   },
-  
-  // {
-  //   title: "Settings",
-  //   href: "/settings",
-  //   icon: Settings,
-  // },
+  {
+    title: "Revenue Share",
+    href: "/revenue-share",
+    icon: HandCoins,
+  },
+  {
+    title: "Ads Management",
+    href: "/ads",
+    icon: Megaphone,
+  },
+  {
+    title: "Settings",
+    href: "/settings",
+    icon: Settings,
+  },
 ];
 
 export function AppSidebar() {
@@ -78,7 +94,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border px-4 py-4">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-[#00e64d]">
+          <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-boost">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/boost-logo.png"

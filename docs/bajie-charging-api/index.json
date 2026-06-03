@@ -1,0 +1,247 @@
+[
+  {
+    "id": "api-104221999",
+    "title": "Query battery list based on Device Id",
+    "paths": [
+      "/cabinet/batteryListByCabinetId/{cabinetId}"
+    ]
+  },
+  {
+    "id": "api-104222000",
+    "title": "binding device to shop",
+    "paths": [
+      "/cabinet/bind2shop/{qrcode}/{newshopid}"
+    ]
+  },
+  {
+    "id": "api-104222001",
+    "title": "Query details based on Device Id",
+    "paths": [
+      "/cabinet/detail/{cabinetId}"
+    ]
+  },
+  {
+    "id": "api-104222002",
+    "title": "Rent and eject the battery for the specified device slot",
+    "paths": [
+      "/cabinet/ejectByRent"
+    ]
+  },
+  {
+    "id": "api-104222003",
+    "title": "eject the battery for the specified device slot by repair",
+    "paths": [
+      "/cabinet/ejectByRepair"
+    ]
+  },
+  {
+    "id": "api-104222005",
+    "title": "get all device list by page",
+    "paths": [
+      "/cabinet/getAllDevicePage"
+    ]
+  },
+  {
+    "id": "api-104222006",
+    "title": "get device list by shop id",
+    "paths": [
+      "/cabinet/getDeviceByShopId"
+    ]
+  },
+  {
+    "id": "api-104222009",
+    "title": "Device Operation",
+    "paths": [
+      "/cabinet/operation"
+    ]
+  },
+  {
+    "id": "api-104222014",
+    "title": "Query slot list based on Device Id",
+    "paths": [
+      "/cabinet/slotByCabinetId/{cabinetId}"
+    ]
+  },
+  {
+    "id": "api-104222036",
+    "title": "create new shop",
+    "paths": [
+      "/shop/create"
+    ]
+  },
+  {
+    "id": "api-104222037",
+    "title": "Delete shop",
+    "paths": [
+      "/shop/delete/{shopid}"
+    ]
+  },
+  {
+    "id": "api-104222038",
+    "title": "get shop detail",
+    "paths": [
+      "/shop/detail/{shopid}"
+    ]
+  },
+  {
+    "id": "api-104222039",
+    "title": "get all shop list",
+    "paths": [
+      "/shop/getShopList"
+    ]
+  },
+  {
+    "id": "api-104222040",
+    "title": "update shop",
+    "paths": [
+      "/shop/update"
+    ]
+  },
+  {
+    "id": "api-110374526",
+    "title": "Order list",
+    "paths": [
+      "/order/list"
+    ]
+  },
+  {
+    "id": "api-136039440",
+    "title": "Cabinet Event Push Config",
+    "paths": [
+      "/cabinet/eventPush/config"
+    ]
+  },
+  {
+    "id": "api-136068784",
+    "title": "Cabinet Event Push",
+    "paths": [
+      "/The URL you configured to receive cabinet event messages"
+    ]
+  },
+  {
+    "id": "api-136071391",
+    "title": "GET Cabinet Event Push Config",
+    "paths": [
+      "/cabinet/eventPush/config/get"
+    ]
+  },
+  {
+    "id": "api-178273644",
+    "title": "1.Get Device Info Copy",
+    "paths": [
+      "/cdb-open-api/v1/rent/cabinet/query"
+    ]
+  },
+  {
+    "id": "api-255199665",
+    "title": "1.Get Price Strategy Page",
+    "paths": [
+      "/shop/priceStrategy/page"
+    ]
+  },
+  {
+    "id": "api-255199666",
+    "title": "2.Get Price Strategy Detail",
+    "paths": [
+      "/shop/priceStrategy/detail/{priceId}"
+    ]
+  },
+  {
+    "id": "api-255199667",
+    "title": "3.Create Or Update Price Strategy",
+    "paths": [
+      "/shop/priceStrategy/saveOrUpdate"
+    ]
+  },
+  {
+    "id": "api-255199668",
+    "title": "4.Delete Price Strategy",
+    "paths": [
+      "/shop/priceStrategy/delete"
+    ]
+  },
+  {
+    "id": "api-255199669",
+    "title": "5.Shop Bind Price Strategy",
+    "paths": [
+      "/shop/priceStrategy/bindShop"
+    ]
+  },
+  {
+    "id": "api-255199670",
+    "title": "6.Shop Unbind Price Strategy",
+    "paths": [
+      "/shop/priceStrategy/unbindShop"
+    ]
+  },
+  {
+    "id": "api-281340763",
+    "title": "Update cabinet advertising information",
+    "paths": [
+      "/cabinet/bindAd"
+    ]
+  },
+  {
+    "id": "api-373187165",
+    "title": "Device unbound to merchant",
+    "paths": [
+      "/cabinet/unbindShop"
+    ]
+  },
+  {
+    "id": "api-405524722",
+    "title": "Device advertisement publish",
+    "paths": [
+      "/cabinet/publishAd"
+    ]
+  },
+  {
+    "id": "api-442646487",
+    "title": "OAuth2登录",
+    "paths": [
+      "/oauth2/login"
+    ]
+  },
+  {
+    "id": "api-67396391",
+    "title": "3.Query Rent Order Status",
+    "paths": [
+      "/rent/order/query"
+    ]
+  },
+  {
+    "id": "api-67396392",
+    "title": "5.Get Order Detail",
+    "paths": [
+      "/rent/order/detail"
+    ]
+  },
+  {
+    "id": "api-67396393",
+    "title": "4.Mark order status as completed",
+    "paths": [
+      "/rent/order/close"
+    ]
+  },
+  {
+    "id": "api-67396394",
+    "title": "1.Get Device Info",
+    "paths": [
+      "/rent/cabinet/query"
+    ]
+  },
+  {
+    "id": "api-67396395",
+    "title": "2.Create Rent Order",
+    "paths": [
+      "/rent/order/create"
+    ]
+  },
+  {
+    "id": "api-99966818",
+    "title": "6.Get Deivice List",
+    "paths": [
+      "/rent/cabinet/list"
+    ]
+  }
+]

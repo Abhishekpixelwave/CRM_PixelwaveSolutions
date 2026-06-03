@@ -1,3 +1,4 @@
+import Link from "next/link"
 import {
   HardDrive,
   Store,
@@ -6,6 +7,8 @@ import {
   Wifi,
   WifiOff,
   TrendingUp,
+  HandCoins,
+  ArrowRight,
 } from "lucide-react"
 import {
   Card,
@@ -27,37 +30,54 @@ import {
   getOpenDeviceList,
   getOrderList,
   getShopList,
+  getAllDevicePage,
   type OpenDeviceListItem,
 } from "@/lib/api-client"
+import { getApiToken } from "@/lib/get-api-token"
+import { OverviewCharts } from "@/components/dashboard/overview-charts"
+import { ShareRevenueButton } from "@/components/share-revenue-button"
+import { fetchRevenueShareAction } from "@/app/(dashboard)/revenue-share/actions"
+import {
+  buildDashboardAnalytics,
+  enrichOrdersForDemo,
+  type DashboardCabinet,
+  type DashboardOrder,
+  type DashboardShop,
+} from "@/lib/dashboard-analytics"
+import { computeDailyRevenue } from "@/lib/dashboard-costs"
 
 export default async function OverviewPage() {
-  const [deviceResponse, shopResponse, orderResponse] = await Promise.all([
-    getOpenDeviceList(),
-    getShopList(),
-    getOrderList(),
-  ])
+  const token = await getApiToken()
+  const [deviceResponse, shopResponse, orderResponse, cabinetResponse] =
+    await Promise.all([
+      getOpenDeviceList({}, token),
+      getShopList(token),
+      getOrderList({}, token),
+      getAllDevicePage({}, token),
+    ])
 
   const devices = (deviceResponse as { list?: OpenDeviceListItem[] }).list || []
-  const shops =
-    (shopResponse as { data?: Array<{ businessStatus?: number }> }).data || []
-  const orders =
-    (
-      orderResponse as {
-        data?: Array<{
-          orderId: string
-          shopName: string
-          amount: string
-          status: string
-        }>
-      }
-    ).data || []
+  const shops = ((shopResponse as { data?: DashboardShop[] }).data ||
+    []) as DashboardShop[]
+  const orders = enrichOrdersForDemo(
+    ((orderResponse as { data?: DashboardOrder[] }).data ||
+      []) as DashboardOrder[],
+    shops
+  )
+  const cabinets = (
+    (cabinetResponse as { data?: { list?: DashboardCabinet[] } }).data?.list ||
+    []
+  ) as DashboardCabinet[]
+
+  const analytics = buildDashboardAnalytics(shops, cabinets, orders)
+  const revenueShare = await fetchRevenueShareAction()
 
   const onlineDevices = devices.filter(
     (d) => d.cabinet.infoStatus === "1"
   ).length
   const offlineDevices = devices.length - onlineDevices
-  const activeOrders = orders.filter((o) => o.status === "renting").length
-  const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.amount), 0)
+  const activeRentals = orders.filter((o) => o.status === "renting").length
+  const dailyRevenue = computeDailyRevenue(orders)
   const totalBatteries = devices.reduce(
     (sum, d) => sum + parseInt(d.cabinet.batteryNum),
     0
@@ -71,28 +91,28 @@ export default async function OverviewPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page header */}
-      <div>
-        <h1 className="font-heading text-2xl font-semibold tracking-tight">
-          Dashboard Overview
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Monitor your Boost charging network at a glance
-        </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+            Dashboard Overview
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Monitor your Boost charging network at a glance
+          </p>
+        </div>
+        <ShareRevenueButton pendingAmount={revenueShare.summary.totalPending} />
       </div>
 
-      {/* KPI Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Total Devices */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Devices
+              Total Kiosks
             </CardTitle>
             <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{devices.length}</div>
+            <div className="text-2xl font-bold">{cabinets.length}</div>
             <div className="mt-1 flex items-center gap-2 text-xs">
               <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
                 <Wifi className="h-3 w-3" /> {onlineDevices} online
@@ -104,11 +124,10 @@ export default async function OverviewPage() {
           </CardContent>
         </Card>
 
-        {/* Total Shops */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Shops
+              Total Venues
             </CardTitle>
             <Store className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -121,50 +140,68 @@ export default async function OverviewPage() {
           </CardContent>
         </Card>
 
-        {/* Active Orders */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Active Orders
+              Active Rentals
             </CardTitle>
             <ShoppingCart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{activeOrders}</div>
+            <div className="text-2xl font-bold">{activeRentals}</div>
             <p className="mt-1 text-xs text-muted-foreground">
-              {orders.length} total orders
+              {orders.length} total rentals
             </p>
           </CardContent>
         </Card>
 
-        {/* Revenue */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Revenue
+              Total Daily Revenue
             </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">¥{totalRevenue.toFixed(2)}</div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              From {orders.length} orders
-            </p>
+            <div className="text-2xl font-bold">${dailyRevenue.toFixed(2)}</div>
+            <p className="mt-1 text-xs text-muted-foreground">Today&apos;s rental revenue</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Battery Overview + Recent Orders */}
+      <Link href="/revenue-share">
+        <Card className="transition-colors hover:border-boost/40 hover:bg-boost/5">
+          <CardContent className="flex items-center justify-between gap-4 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-boost/15">
+                <HandCoins className="h-5 w-5 text-boost" />
+              </div>
+              <div>
+                <p className="font-medium">Share revenue with clients</p>
+                <p className="text-sm text-muted-foreground">
+                  ${revenueShare.summary.totalPending.toFixed(2)} pending ·{" "}
+                  {revenueShare.summary.totalPartnerShare.toFixed(2)} shared with partners
+                </p>
+              </div>
+            </div>
+            <span className="flex items-center gap-1 text-sm font-medium text-boost">
+              Manage payouts <ArrowRight className="h-4 w-4" />
+            </span>
+          </CardContent>
+        </Card>
+      </Link>
+
+      <OverviewCharts analytics={analytics} kioskCount={cabinets.length} />
+
       <div className="grid gap-4 lg:grid-cols-3">
-        {/* Battery Status */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Battery className="h-4 w-4" />
-              Battery Status
+              Available Batteries
             </CardTitle>
             <CardDescription>
-              Overall battery availability across all devices
+              Charger availability across all kiosks
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -177,10 +214,8 @@ export default async function OverviewPage() {
               </div>
               <div className="h-3 overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-primary transition-all"
-                  style={{
-                    width: `${availabilityPercent}%`,
-                  }}
+                  className="h-full rounded-full bg-boost transition-all"
+                  style={{ width: `${availabilityPercent}%` }}
                 />
               </div>
               <p className="text-xs text-muted-foreground">
@@ -188,7 +223,6 @@ export default async function OverviewPage() {
               </p>
             </div>
 
-            {/* Per-device breakdown */}
             <div className="space-y-2 pt-2">
               {devices.map((device) => (
                 <div
@@ -199,7 +233,7 @@ export default async function OverviewPage() {
                     <div
                       className={`h-2 w-2 rounded-full ${
                         device.cabinet.infoStatus === "1"
-                          ? "bg-emerald-500"
+                          ? "bg-boost"
                           : "bg-destructive"
                       }`}
                     />
@@ -216,33 +250,32 @@ export default async function OverviewPage() {
           </CardContent>
         </Card>
 
-        {/* Recent Orders */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <ShoppingCart className="h-4 w-4" />
-              Recent Orders
+              Recent Rentals
             </CardTitle>
-            <CardDescription>Latest rental orders</CardDescription>
+            <CardDescription>Latest rental activity</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Shop</TableHead>
+                  <TableHead>Rental ID</TableHead>
+                  <TableHead>Venue</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orders.map((order) => (
+                {orders.slice(0, 8).map((order) => (
                   <TableRow key={order.orderId}>
                     <TableCell className="font-mono text-xs">
                       {order.orderId}
                     </TableCell>
                     <TableCell className="text-sm">{order.shopName}</TableCell>
-                    <TableCell className="text-sm">¥{order.amount}</TableCell>
+                    <TableCell className="text-sm">${order.amount}</TableCell>
                     <TableCell>
                       <Badge
                         variant={

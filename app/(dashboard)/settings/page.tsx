@@ -1,5 +1,6 @@
 import { Settings } from "lucide-react"
 import { SettingsClient } from "./settings-client"
+import { AppearanceSettings } from "@/components/appearance-settings"
 import { fetchEventPushConfigAction } from "./actions"
 
 export default async function SettingsPage() {
@@ -20,6 +21,7 @@ export default async function SettingsPage() {
         </div>
       </div>
       
+      <AppearanceSettings />
       <SettingsClient initialConfig={initialConfig} />
     </div>
   )

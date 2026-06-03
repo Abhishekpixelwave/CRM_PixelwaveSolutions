@@ -17,8 +17,8 @@ const API_BASE_URL =
 const DEFAULT_OPEN_DEVICE_LIST_PARAMS = {
   coordType: process.env.BAJIE_COORD_TYPE || "gcj02",
   zoomLevel: process.env.BAJIE_ZOOM_LEVEL || "14",
-  lat: process.env.BAJIE_DEFAULT_LAT || "22.989442",
-  lng: process.env.BAJIE_DEFAULT_LNG || "113.327761",
+  lat: process.env.BAJIE_DEFAULT_LAT || "40.758896",
+  lng: process.env.BAJIE_DEFAULT_LNG || "-73.985130",
   showPrice: process.env.BAJIE_SHOW_PRICE || "true",
 }
 
@@ -276,7 +276,7 @@ export async function unbindDeviceFromShop(
   }
   return apiFetch(
     "/cabinet/unbindShop",
-    { method: "GET", body: JSON.stringify(deviceIds) },
+    { method: "POST", body: JSON.stringify(deviceIds) },
     token
   )
 }
@@ -374,7 +374,7 @@ export async function getShopDetail(shopId: string, token?: string) {
     const shop = devShops.find((s) => s.newID === shopId)
     return { msg: "success", code: "200", data: shop || null }
   }
-  return apiFetch(`/shop/getShopInfo?newID=${shopId}`, {}, token)
+  return apiFetch(`/shop/detail/${shopId}`, {}, token)
 }
 
 export async function createShop(payload: CreateShopPayload, token?: string) {
@@ -401,8 +401,8 @@ export async function createShop(payload: CreateShopPayload, token?: string) {
       pJifeiDanwei: "per hour",
       pFengding: "10.00",
       pYajin: "20.00",
-      pCurrency: payload.pCurrency || "CNY",
-      currencyName: "Chinese Yuan",
+      pCurrency: payload.pCurrency || "USD",
+      currencyName: payload.pCurrency === "CNY" ? "Chinese Yuan" : "US Dollar",
       businessStatus: payload.pAuditor ?? 1,
       pContent: payload.pContent || "",
       shopBanner: "",
@@ -710,7 +710,13 @@ export async function createRentOrder(
 
 export async function queryRentOrderStatus(tradeNo: string, token?: string) {
   if (isDev) {
-    return { msg: "success", code: 0, data: { status: 1 } } // 1 = Rent success
+    const { getRentCallbackStatus } = await import("./webhook-events")
+    const callback = getRentCallbackStatus(tradeNo)
+    return {
+      msg: "success",
+      code: 0,
+      data: { status: callback?.status ?? 1 },
+    }
   }
   return apiFetch(
     `/rent/order/query?tradeNo=${tradeNo}`,
@@ -744,7 +750,7 @@ export async function getOrderDetail(tradeNo: string, token?: string) {
         orderAmount: 2,
         borrowTime: new Date().toISOString(),
         price: 0.5,
-        currency: "CNY",
+        currency: "USD",
         deviceType: "8-slot",
         priceMinute: "1",
         borrowSlot: 1,

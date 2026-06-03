@@ -6,6 +6,7 @@ import {
   Store,
   Signal,
   Monitor,
+  AlertTriangle,
 } from "lucide-react";
 import {
   Card,
@@ -23,19 +24,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllDevicePage, getShopList } from "@/lib/api-client";
+import { getAllDevicePage, getOpenDeviceList, getShopList } from "@/lib/api-client";
+import { getApiToken } from "@/lib/get-api-token";
+import {
+  deriveSlotStatuses,
+  estimateBrokenSlots,
+  KioskHealthBadge,
+  KioskSlotGrid,
+} from "@/components/devices/kiosk-slot-grid";
 import {
   DeviceOperationDialog,
   EjectRepairDialog,
+  EjectRentDialog,
   BindDeviceDialog,
   UnbindDeviceButton,
+  DeviceDetailDialog,
+  CabinetAdDialog,
 } from "./device-dialogs";
 
 export default async function DevicesPage() {
-  const [cabinetRes, shopRes] = await Promise.all([
-    getAllDevicePage(),
-    getShopList(),
+  const token = await getApiToken();
+  const [cabinetRes, shopRes, openDeviceRes] = await Promise.all([
+    getAllDevicePage({}, token),
+    getShopList(token),
+    getOpenDeviceList({}, token),
   ]);
+
+  const openDevices =
+    (openDeviceRes as { list?: Array<Record<string, unknown>> }).list || [];
 
   const cabinets =
     (cabinetRes as { data: { list: Array<Record<string, unknown>> } }).data
@@ -53,18 +69,21 @@ export default async function DevicesPage() {
     (sum, c) => sum + ((c.busySlots as number) || 0),
     0
   );
+  const totalAvailable = cabinets.reduce(
+    (sum, c) => sum + ((c.emptySlots as number) || 0),
+    0
+  );
 
   return (
     <div className="min-w-0 space-y-6">
-      {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-heading text-2xl font-semibold tracking-tight">
-            Devices
+            Kiosks
           </h1>
           <p className="text-sm text-muted-foreground">
-            Manage cabinets &amp; device operations — {cabinets.length} devices,{" "}
-            {totalSlots} total slots
+            Manage kiosks &amp; slot health — {cabinets.length} kiosks,{" "}
+            {totalAvailable} slots available
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -79,12 +98,11 @@ export default async function DevicesPage() {
         </div>
       </div>
 
-      {/* KPI cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Devices
+              Total Kiosks
             </CardTitle>
             <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -95,7 +113,7 @@ export default async function DevicesPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Online
+              Kiosks Online
             </CardTitle>
             <Wifi className="h-4 w-4 text-emerald-500" />
           </CardHeader>
@@ -108,23 +126,24 @@ export default async function DevicesPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Slots In Use
+              Slots Available
             </CardTitle>
             <Battery className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {totalBusy}
+              {totalAvailable}
               <span className="text-sm font-normal text-muted-foreground">
                 /{totalSlots}
               </span>
             </div>
+            <p className="text-xs text-muted-foreground">{totalBusy} in use</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Linked Shops
+              Linked Venues
             </CardTitle>
             <Store className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -136,15 +155,14 @@ export default async function DevicesPage() {
         </Card>
       </div>
 
-      {/* Devices table */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
             <Monitor className="h-4 w-4" />
-            All Cabinets
+            All Kiosks
           </CardTitle>
           <CardDescription>
-            Full device management with operations, binding, and slot info
+            Slot map per machine — green available, amber in use, red broken
           </CardDescription>
         </CardHeader>
         <CardContent className="px-0">
@@ -152,118 +170,182 @@ export default async function DevicesPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Cabinet ID</TableHead>
-                  <TableHead>Shop</TableHead>
+                  <TableHead>Kiosk ID</TableHead>
+                  <TableHead>Linked Venue</TableHead>
                   <TableHead>Type</TableHead>
-                  <TableHead className="text-center">Slots</TableHead>
-                  <TableHead className="text-center">Busy / Empty</TableHead>
-                  <TableHead>IP</TableHead>
-                  <TableHead>Signal</TableHead>
+                  <TableHead>Slot map</TableHead>
+                  <TableHead className="text-center">Used / Avail</TableHead>
+                  <TableHead>Health</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Remark</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="min-w-[280px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cabinets.map((cab) => (
-                  <TableRow key={cab.cabinetId as string}>
-                    <TableCell className="font-mono text-xs font-medium">
-                      {cab.cabinetId as string}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {(cab.shopName as string) || (
-                        <span className="text-muted-foreground italic">
-                          Unassigned
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary" className="text-xs">
-                        {cab.type as string}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-center text-sm">
-                      {cab.slots as number}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex items-center justify-center gap-1 text-sm">
+                {cabinets.map((cab) => {
+                  const slots = (cab.slots as number) || 0;
+                  const busy = (cab.busySlots as number) || 0;
+                  const empty = (cab.emptySlots as number) || 0;
+                  const broken = estimateBrokenSlots(cab);
+                  const slotStatuses = deriveSlotStatuses(slots, busy, broken);
+                  const online = cab.online === true;
+                  const weakSignal = cab.signal === "weak";
+
+                  return (
+                    <TableRow key={cab.cabinetId as string}>
+                      <TableCell className="font-mono text-xs font-medium">
+                        {cab.cabinetId as string}
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {(cab.shopName as string) || (
+                          <span className="italic text-muted-foreground">
+                            Unassigned
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="secondary" className="text-xs">
+                          {cab.type as string}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <KioskSlotGrid slots={slotStatuses} />
+                      </TableCell>
+                      <TableCell className="text-center text-sm">
                         <span className="text-amber-600 dark:text-amber-400">
-                          {cab.busySlots as number}
+                          {busy}
                         </span>
-                        <span className="text-muted-foreground">/</span>
+                        <span className="text-muted-foreground"> / </span>
                         <span className="text-emerald-600 dark:text-emerald-400">
-                          {cab.emptySlots as number}
+                          {empty}
                         </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-mono text-xs text-muted-foreground">
-                      {cab.ip as string}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-sm">
-                        <Signal
-                          className={`h-3 w-3 ${
-                            cab.signal === "strong"
-                              ? "text-emerald-500"
-                              : cab.signal === "medium"
-                                ? "text-amber-500"
-                                : "text-destructive"
-                          }`}
+                      </TableCell>
+                      <TableCell>
+                        <KioskHealthBadge
+                          online={online}
+                          brokenSlots={broken}
+                          weakSignal={weakSignal}
                         />
-                        <span className="capitalize text-muted-foreground">
-                          {cab.signal as string}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={
-                          cab.online
-                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                            : "bg-destructive/10 text-destructive"
-                        }
-                      >
-                        <span
-                          className={`mr-1.5 inline-block h-1.5 w-1.5 rounded-full ${
-                            cab.online ? "bg-emerald-500" : "bg-destructive"
-                          }`}
-                        />
-                        {cab.online ? "Online" : "Offline"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell
-                      className="max-w-[120px] truncate text-xs text-muted-foreground"
-                      title={cab.remark as string}
-                    >
-                      {(cab.remark as string) || "—"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-0.5">
-                        <DeviceOperationDialog
-                          cabinetId={cab.cabinetId as string}
-                        />
-                        <EjectRepairDialog
-                          cabinetId={cab.cabinetId as string}
-                        />
-                        <BindDeviceDialog
-                          cabinetId={cab.cabinetId as string}
-                          shops={shops}
-                        />
-                        <UnbindDeviceButton
-                          cabinetId={cab.cabinetId as string}
-                        />
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        {!online && (
+                          <AlertTriangle className="mt-0.5 h-3 w-3 text-destructive" />
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="secondary"
+                          className={
+                            online
+                              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                              : "bg-destructive/10 text-destructive"
+                          }
+                        >
+                          {online ? "Online" : "Offline"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap items-center gap-1">
+                          <DeviceDetailDialog
+                            cabinetId={cab.cabinetId as string}
+                          />
+                          <DeviceOperationDialog
+                            cabinetId={cab.cabinetId as string}
+                          />
+                          <EjectRepairDialog
+                            cabinetId={cab.cabinetId as string}
+                          />
+                          <EjectRentDialog
+                            cabinetId={cab.cabinetId as string}
+                          />
+                          <CabinetAdDialog
+                            cabinetId={cab.cabinetId as string}
+                          />
+                          <BindDeviceDialog
+                            cabinetId={cab.cabinetId as string}
+                            shops={shops}
+                          />
+                          <UnbindDeviceButton
+                            cabinetId={cab.cabinetId as string}
+                          />
+                        </div>
+                        <p className="mt-1 text-[10px] text-muted-foreground">
+                          View · Ops · Repair · Rent · Ad · Bind · Unbind
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
                 {cabinets.length === 0 && (
                   <TableRow>
                     <TableCell
-                      colSpan={10}
+                      colSpan={8}
                       className="py-8 text-center text-muted-foreground"
                     >
-                      No devices found.
+                      No kiosks found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Open API Kiosk List</CardTitle>
+          <CardDescription>
+            Nearby kiosks from consumer app API
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Venue</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>Batteries</TableHead>
+                  <TableHead>Available</TableHead>
+                  <TableHead>Distance</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {openDevices.map((item, idx) => {
+                  const shop = item.shop as Record<string, unknown> | undefined;
+                  const cabinet = item.cabinet as Record<string, unknown> | undefined;
+                  return (
+                    <TableRow key={(shop?.id as string) || idx}>
+                      <TableCell className="font-medium">
+                        {(shop?.shopName as string) || "—"}
+                      </TableCell>
+                      <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground">
+                        {(shop?.shopAddress as string) || "—"}
+                      </TableCell>
+                      <TableCell>{cabinet?.batteryNum as string}</TableCell>
+                      <TableCell>{cabinet?.freeNum as string}</TableCell>
+                      <TableCell>{(shop?.distance as string) || "—"}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="secondary"
+                          className={
+                            cabinet?.infoStatus === "1"
+                              ? "bg-emerald-500/10 text-emerald-600"
+                              : "bg-destructive/10 text-destructive"
+                          }
+                        >
+                          {cabinet?.infoStatus === "1" ? "Online" : "Offline"}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {openDevices.length === 0 && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="py-8 text-center text-muted-foreground"
+                    >
+                      No Open API kiosks returned.
                     </TableCell>
                   </TableRow>
                 )}

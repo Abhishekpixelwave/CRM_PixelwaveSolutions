@@ -66,7 +66,7 @@ import {
     Undo2Icon,
     WaypointsIcon,
 } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useTheme } from "@/components/theme-provider"
 import React, {
     Suspense,
     createContext,
@@ -267,12 +267,13 @@ function MapTileLayer({
         "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
 
     const { resolvedTheme } = useTheme()
+    const isDarkMap = resolvedTheme === "dark" || resolvedTheme === "night"
     const resolvedUrl =
-        resolvedTheme === "dark"
+        isDarkMap
             ? (darkUrl ?? url ?? DEFAULT_DARK_URL)
             : (url ?? DEFAULT_URL)
     const resolvedAttribution =
-        resolvedTheme === "dark" && darkAttribution
+        isDarkMap && darkAttribution
             ? darkAttribution
             : (attribution ??
               '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')

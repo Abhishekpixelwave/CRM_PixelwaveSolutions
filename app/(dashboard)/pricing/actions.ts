@@ -5,10 +5,13 @@ import {
   deletePriceStrategy,
   bindShopPriceStrategy,
   unbindShopPriceStrategy,
+  getPriceStrategyDetail,
 } from "@/lib/api-client";
+import { getApiToken } from "@/lib/get-api-token";
 import { revalidatePath } from "next/cache";
 
 export async function createOrUpdatePriceStrategyAction(formData: FormData) {
+  const token = await getApiToken();
   const priceIdRaw = formData.get("priceId") as string;
   const payload = {
     priceId: priceIdRaw ? Number(priceIdRaw) : null,
@@ -26,34 +29,42 @@ export async function createOrUpdatePriceStrategyAction(formData: FormData) {
     isDeposit: formData.get("isDeposit") === "true",
     shopId: (formData.get("shopId") as string) || undefined,
   };
-  await saveOrUpdatePriceStrategy(payload);
+  await saveOrUpdatePriceStrategy(payload, token);
   revalidatePath("/pricing");
   return { success: true };
 }
 
 export async function deletePriceStrategyAction(priceId: number) {
-  await deletePriceStrategy([priceId]);
+  const token = await getApiToken();
+  await deletePriceStrategy([priceId], token);
   revalidatePath("/pricing");
   return { success: true };
 }
 
 export async function bindShopPriceStrategyAction(formData: FormData) {
+  const token = await getApiToken();
   const payload = {
     shopId: formData.get("shopId") as string,
     priceId: Number(formData.get("priceId")),
     customType: Number(formData.get("customType") || 0),
   };
-  await bindShopPriceStrategy(payload);
+  await bindShopPriceStrategy(payload, token);
   revalidatePath("/pricing");
   return { success: true };
 }
 
 export async function unbindShopPriceStrategyAction(formData: FormData) {
+  const token = await getApiToken();
   const payload = {
     shopId: formData.get("shopId") as string,
     customType: Number(formData.get("customType") || 0),
   };
-  await unbindShopPriceStrategy(payload);
+  await unbindShopPriceStrategy(payload, token);
   revalidatePath("/pricing");
   return { success: true };
+}
+
+export async function fetchPriceStrategyDetailAction(priceId: number) {
+  const token = await getApiToken();
+  return getPriceStrategyDetail(priceId, token);
 }
