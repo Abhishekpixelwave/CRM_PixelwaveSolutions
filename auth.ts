@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { loginApi } from "@/lib/api-client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   pages: {
     signIn: "/sign-in",
   },
