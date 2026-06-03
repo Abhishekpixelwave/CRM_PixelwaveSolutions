@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, User, Lock, Eye, EyeOff, FlaskConical } from "lucide-react";
@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -170,5 +170,43 @@ export default function SignInPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+function SignInFallback() {
+  return (
+    <div className="animate-in fade-in duration-700">
+      <Card className="border-border/50 bg-card/80 shadow-2xl backdrop-blur-xl">
+        <CardHeader className="space-y-3 pb-6 text-center">
+          <div className="mx-auto flex h-16 w-auto items-center justify-center overflow-hidden rounded-2xl bg-boost px-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/boost-logo.png"
+              alt="Boost"
+              className="h-10 w-auto object-contain"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <CardTitle className="font-heading text-2xl font-semibold tracking-tight">
+              Boost
+            </CardTitle>
+            <CardDescription className="text-sm text-muted-foreground">
+              Sign in to your CMS dashboard
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="flex justify-center py-8">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<SignInFallback />}>
+      <SignInForm />
+    </Suspense>
   );
 }

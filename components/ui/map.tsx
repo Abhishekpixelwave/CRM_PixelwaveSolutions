@@ -262,9 +262,9 @@ function MapTileLayer({
 
     const context = useContext(MapLayersContext)
     const DEFAULT_URL =
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
     const DEFAULT_DARK_URL =
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
 
     const { resolvedTheme } = useTheme()
     const isDarkMap = resolvedTheme === "dark" || resolvedTheme === "night"
