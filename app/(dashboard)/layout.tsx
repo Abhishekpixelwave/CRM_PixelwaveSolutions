@@ -22,7 +22,7 @@ export default async function DashboardLayout({
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="overflow-hidden">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/50 bg-background/90 px-4 backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 !h-4" />
           <div className="flex flex-1 items-center justify-between gap-3">

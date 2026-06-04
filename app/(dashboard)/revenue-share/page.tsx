@@ -120,36 +120,36 @@ export default async function RevenueSharePage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex h-4 overflow-hidden rounded-full">
+          <div className="flex h-3.5 overflow-hidden rounded-full bg-muted/40 shadow-inner sm:h-4">
             <div
-              className="bg-boost"
-              style={{
-                width:
-                  summary.totalGross > 0
-                    ? `${(summary.totalPartnerShare / summary.totalGross) * 100}%`
-                    : "50%",
-              }}
-              title="Client share"
-            />
-            <div
-              className="bg-muted-foreground/30"
+              className="bg-boost transition-[width] duration-500"
               style={{
                 width:
                   summary.totalGross > 0
                     ? `${(summary.totalPlatformShare / summary.totalGross) * 100}%`
-                    : "50%",
+                    : "90%",
               }}
               title="Boost share"
             />
+            <div
+              className="bg-muted-foreground/25 transition-[width] duration-500"
+              style={{
+                width:
+                  summary.totalGross > 0
+                    ? `${(summary.totalPartnerShare / summary.totalGross) * 100}%`
+                    : "10%",
+              }}
+              title="Client share"
+            />
           </div>
-          <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+          <div className="mt-3 flex justify-between text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <span className="inline-block h-2 w-2 rounded-full bg-boost" />
-              Clients (${summary.totalPartnerShare.toFixed(2)})
+              Boost (${summary.totalPlatformShare.toFixed(2)})
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-2 w-2 rounded-full bg-muted-foreground/30" />
-              Boost (${summary.totalPlatformShare.toFixed(2)})
+              <span className="inline-block h-2 w-2 rounded-full bg-muted-foreground/35" />
+              Clients (${summary.totalPartnerShare.toFixed(2)})
             </span>
           </div>
         </CardContent>

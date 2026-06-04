@@ -136,9 +136,9 @@ export function VenueGrid({ shops }: { shops: VenueRecord[] }) {
                 key={id}
                 type="button"
                 onClick={() => setExpandedId(isExpanded ? null : id)}
-                className={`flex aspect-square flex-col items-start justify-between rounded-lg border p-3 text-left transition-all hover:border-boost/40 hover:shadow-md ${
+                className={`flex aspect-square flex-col items-start justify-between rounded-2xl border border-border/50 p-3 text-left shadow-sm shadow-black/[0.04] transition-all hover:border-boost/30 hover:shadow-md dark:shadow-black/20 ${
                   isExpanded
-                    ? "border-boost ring-2 ring-boost/30"
+                    ? "border-boost/40 ring-1 ring-boost/20"
                     : "bg-card"
                 }`}
               >
@@ -178,7 +178,7 @@ export function VenueGrid({ shops }: { shops: VenueRecord[] }) {
             const isOpen = shop.businessStatus === 1
             const p = getPreview(shop)
             return (
-              <div className="mt-4 rounded-xl border bg-card p-4 shadow-sm">
+              <div className="mt-4 rounded-2xl border border-border/50 bg-card p-4 shadow-sm shadow-black/[0.04] dark:shadow-black/20">
                 <div className="mb-4 flex items-start justify-between gap-3">
                   <div>
                     <h3 className="text-lg font-semibold">

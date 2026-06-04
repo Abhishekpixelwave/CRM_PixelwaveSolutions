@@ -120,11 +120,15 @@ export async function publishCabinetAdAction(formData: FormData) {
 
 export async function fetchDeviceDetailAction(cabinetId: string) {
   const token = await getApiToken();
-  const [detail, slots, batteries, openInfo] = await Promise.all([
-    getCabinetDetail(cabinetId, token),
-    getSlotList(cabinetId, token),
-    getBatteryList(cabinetId, token),
-    getOpenDeviceInfo(cabinetId, token).catch(() => null),
-  ]);
-  return { detail, slots, batteries, openInfo };
+  try {
+    const [detail, slots, batteries, openInfo] = await Promise.all([
+      getCabinetDetail(cabinetId, token),
+      getSlotList(cabinetId, token),
+      getBatteryList(cabinetId, token),
+      getOpenDeviceInfo(cabinetId, token).catch(() => null),
+    ]);
+    return { detail, slots, batteries, openInfo };
+  } catch {
+    return { detail: null, slots: null, batteries: null, openInfo: null };
+  }
 }

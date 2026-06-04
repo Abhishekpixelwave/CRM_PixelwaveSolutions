@@ -1,8 +1,11 @@
-/** Mock data + any-credentials login (local dev or DEMO_MODE=true on Vercel). */
-export function isDemoMode(): boolean {
+import { MOCK_TOKEN } from "./mock-data"
+
+/** Mock data + any-credentials login (local dev, DEMO_MODE, or demo session token). */
+export function isDemoMode(apiToken?: string | null): boolean {
   return (
     process.env.NODE_ENV === "development" ||
-    process.env.DEMO_MODE === "true"
+    process.env.DEMO_MODE === "true" ||
+    (!!apiToken && apiToken === MOCK_TOKEN)
   )
 }
 

@@ -57,7 +57,7 @@ function SignInForm() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <Card className="border-border/50 bg-card/80 shadow-2xl backdrop-blur-xl">
+      <Card className="border-border/50 bg-card/80 shadow-md shadow-black/[0.06] backdrop-blur-xl dark:shadow-black/30">
         <CardHeader className="space-y-3 pb-6 text-center">
           {/* Logo / Brand */}
           <div className="mx-auto flex h-16 w-auto items-center justify-center overflow-hidden rounded-2xl bg-boost px-3">
@@ -177,7 +177,7 @@ function SignInForm() {
 function SignInFallback() {
   return (
     <div className="animate-in fade-in duration-700">
-      <Card className="border-border/50 bg-card/80 shadow-2xl backdrop-blur-xl">
+      <Card className="border-border/50 bg-card/80 shadow-md shadow-black/[0.06] backdrop-blur-xl dark:shadow-black/30">
         <CardHeader className="space-y-3 pb-6 text-center">
           <div className="mx-auto flex h-16 w-auto items-center justify-center overflow-hidden rounded-2xl bg-boost px-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}

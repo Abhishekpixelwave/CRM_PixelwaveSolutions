@@ -129,7 +129,7 @@ export function ChargerMap({
   }
 
   return (
-    <div className="flex h-full min-h-[520px] overflow-hidden rounded-xl border bg-card shadow-sm">
+    <div className="flex h-full min-h-[520px] overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm shadow-black/[0.04] dark:shadow-black/20">
       <div className="relative min-w-0 flex-1">
         <MapLayers defaultTileLayer={streets.name}>
           <Map

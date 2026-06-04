@@ -44,20 +44,32 @@ import {
 
 export default async function DevicesPage() {
   const token = await getApiToken();
-  const [cabinetRes, shopRes, openDeviceRes] = await Promise.all([
-    getAllDevicePage({}, token),
-    getShopList(token),
-    getOpenDeviceList({}, token),
-  ]);
 
-  const openDevices =
-    (openDeviceRes as { list?: Array<Record<string, unknown>> }).list || [];
+  let cabinets: Array<Record<string, unknown>> = [];
+  let shops: Array<{ newID: string; shopName: string }> = [];
+  let openDevices: Array<Record<string, unknown>> = [];
+  let loadError: string | null = null;
 
-  const cabinets =
-    (cabinetRes as { data: { list: Array<Record<string, unknown>> } }).data
-      ?.list || [];
-  const shops =
-    (shopRes as { data: Array<{ newID: string; shopName: string }> }).data || [];
+  try {
+    const [cabinetRes, shopRes, openDeviceRes] = await Promise.all([
+      getAllDevicePage({}, token),
+      getShopList(token),
+      getOpenDeviceList({}, token),
+    ]);
+
+    openDevices =
+      (openDeviceRes as { list?: Array<Record<string, unknown>> }).list || [];
+
+    cabinets =
+      (cabinetRes as { data: { list: Array<Record<string, unknown>> } }).data
+        ?.list || [];
+    shops =
+      (shopRes as { data: Array<{ newID: string; shopName: string }> }).data ||
+      [];
+  } catch (error) {
+    loadError =
+      error instanceof Error ? error.message : "Failed to load kiosk data";
+  }
 
   const onlineCount = cabinets.filter((c) => c.online === true).length;
   const offlineCount = cabinets.length - onlineCount;
@@ -76,6 +88,13 @@ export default async function DevicesPage() {
 
   return (
     <div className="min-w-0 space-y-6">
+      {loadError && (
+        <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {loadError}. Enable{" "}
+          <code className="rounded bg-background/80 px-1">DEMO_MODE=true</code> on
+          Vercel or check your Bajie API credentials.
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-heading text-2xl font-semibold tracking-tight">
