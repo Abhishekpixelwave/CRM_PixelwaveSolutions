@@ -29,6 +29,8 @@ import { getApiToken } from "@/lib/get-api-token";
 import {
   deriveSlotStatuses,
   estimateBrokenSlots,
+} from "@/lib/kiosk-slots";
+import {
   KioskHealthBadge,
   KioskSlotGrid,
 } from "@/components/devices/kiosk-slot-grid";
