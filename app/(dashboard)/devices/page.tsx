@@ -228,7 +228,7 @@ export default async function DevicesPage() {
                           {cab.type as string}
                         </Badge>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="min-w-[5.5rem] max-w-[7rem]">
                         <KioskSlotGrid slots={slotStatuses} />
                       </TableCell>
                       <TableCell className="text-center text-sm">

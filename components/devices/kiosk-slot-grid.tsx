@@ -1,14 +1,45 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import type { SlotStatus } from "@/lib/kiosk-slots"
+import {
+  getSlotGridLayout,
+  summarizeSlotStatuses,
+  type SlotStatus,
+} from "@/lib/kiosk-slots"
 
 export type { SlotStatus } from "@/lib/kiosk-slots"
 
 const SLOT_STYLE: Record<SlotStatus, string> = {
-  available: "bg-boost/80",
-  "in-use": "bg-amber-500/80",
-  broken: "bg-destructive/80",
+  available: "bg-boost/85",
+  "in-use": "bg-amber-500/85",
+  broken: "bg-destructive/85",
+}
+
+function SlotLegend({ counts }: { counts: Record<SlotStatus, number> }) {
+  if (counts.available + counts["in-use"] + counts.broken === 0) return null
+
+  return (
+    <div className="mt-1 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] leading-none text-muted-foreground">
+      {counts.available > 0 && (
+        <span className="inline-flex items-center gap-1">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-boost/85" />
+          {counts.available}
+        </span>
+      )}
+      {counts["in-use"] > 0 && (
+        <span className="inline-flex items-center gap-1">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500/85" />
+          {counts["in-use"]}
+        </span>
+      )}
+      {counts.broken > 0 && (
+        <span className="inline-flex items-center gap-1">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-destructive/85" />
+          {counts.broken}
+        </span>
+      )}
+    </div>
+  )
 }
 
 export function KioskSlotGrid({
@@ -20,24 +51,37 @@ export function KioskSlotGrid({
   compact?: boolean
   className?: string
 }) {
-  const cols = slots.length <= 6 ? 3 : 4
+  const { cols, dotClass, gapClass } = getSlotGridLayout(slots.length)
+  const counts = summarizeSlotStatuses(slots)
+  const dense = slots.length > 12
+  const showPerSlotTooltip = slots.length <= 24
 
   return (
-    <div
-      className={cn("grid gap-0.5", className)}
-      style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
-    >
-      {slots.map((status, i) => (
-        <div
-          key={i}
-          title={`Slot ${i + 1}: ${status}`}
-          className={cn(
-            "rounded-sm",
-            compact ? "h-2 w-2" : "h-3 min-w-3",
-            SLOT_STYLE[status]
-          )}
-        />
-      ))}
+    <div className={cn("min-w-0", className)}>
+      <div
+        className={cn("inline-grid", gapClass, dense && "max-w-[5.5rem]")}
+        style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+        title={
+          dense
+            ? `${counts.available} available · ${counts["in-use"]} in use · ${counts.broken} broken (${slots.length} slots)`
+            : undefined
+        }
+      >
+        {slots.map((status, i) => (
+          <div
+            key={i}
+            title={
+              showPerSlotTooltip ? `Slot ${i + 1}: ${status}` : undefined
+            }
+            className={cn(
+              "shrink-0",
+              compact ? "h-1.5 w-1.5 rounded-full" : dotClass,
+              SLOT_STYLE[status]
+            )}
+          />
+        ))}
+      </div>
+      {dense && <SlotLegend counts={counts} />}
     </div>
   )
 }
